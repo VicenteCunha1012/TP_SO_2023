@@ -17,12 +17,11 @@ void writeWindowLabel(char string[], int tamanho, WINDOW* window) {
     }
 }
 
-
 void mvwprintstr(char string[], int tamanho, int x,int y, WINDOW* window) {
     for(int i=0;i<tamanho;i++) {
-        mvwprintw(window, x+i,y,"%c",string[i]);
+        mvwprintw(window, y,x+i,"%c",string[i]);
     }
-}
+} 
 
 int main() {
     initscr();
@@ -54,7 +53,7 @@ int main() {
     int currCarr=-1;
     char command[STRINGSIZE];
     
-    while ((ch = getch()) != 'q') {
+    while (ch = getch()) {
         switch(ch) {
             case(KEY_UP):
                 mvwprintw(top_win, 1, 1, "Pressed%d",++upCount);
@@ -74,20 +73,26 @@ int main() {
                 } else {
 
                 command[currCarr+1] = '\0';
+                mvwprintw(bottom_win,3,0,   "                         ");
                 mvwprintw(bottom_win, 3, 0, "[Introduziu]: %s",command);
                 wrefresh(bottom_win);
                 }
                 break;
             case (KEY_BACKSPACE):
+                if(currCarr<0) {
+
+                } else {
+
                 command[currCarr]='\0';
                 currCarr--;
                 mvwprintw(bottom_win,2,0,"                     ");
-                mvwprintw(bottom_win,2,0,command);
+                mvwprintw(bottom_win,2,0,"%s",command);
+                }
                 wrefresh(bottom_win);
 
             default:
                 
-                if(isalnum(ch)) {
+                if(isalnum(ch) || (ch==32)) {
                     mvwprintw(bottom_win,2,++currCarr+1,"%c",ch);
                     if(currCarr>=STRINGSIZE-1) {
 

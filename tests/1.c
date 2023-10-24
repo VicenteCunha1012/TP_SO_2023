@@ -17,11 +17,6 @@ void writeWindowLabel(char string[], int tamanho, WINDOW* window) {
     }
 }
 
-void mvwprintstr(char string[], int tamanho, int x,int y, WINDOW* window) {
-    for(int i=0;i<tamanho;i++) {
-        mvwprintw(window, y,x+i,"%c",string[i]);
-    }
-} 
 
 int main() {
     initscr();
@@ -85,8 +80,8 @@ int main() {
 
                 command[currCarr]='\0';
                 currCarr--;
-                mvwprintw(bottom_win,2,0,"                     ");
-                mvwprintw(bottom_win,2,0,"%s",command);
+                mvwprintw(bottom_win,2,1,"                     ");
+                mvwprintw(bottom_win,2,1,"%s",command);
                 }
                 wrefresh(bottom_win);
 

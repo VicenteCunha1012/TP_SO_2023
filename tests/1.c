@@ -13,6 +13,7 @@
 #define minXAvatar 2
 #define maxYAvatar 13
 #define minYAvatar 2
+#define avoydablesSIZE 4 //a contar com \0
 //16x40(*2)
 
 void writeWindowLabel(char string[], int tamanho, WINDOW* window) {
@@ -33,6 +34,16 @@ void posicionarAvatar(avatar avat, WINDOW* window) {
     mvwprintw(window, avat.y,avat.x,"%c",avat.icone);
 }
 
+int isAvoydable(char avoydables[],WINDOW* window, int x, int y) {
+    char tempchar = mvwinch(window,y,x) & A_CHARTEXT;
+    for(int i=0;i<avoydablesSIZE;i++) {
+        if(tempchar == avoydables[i]) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
 
 
 
@@ -50,6 +61,9 @@ int main() {
     avatar1.y = 10;
     avatar1.icone = '1'; 
 
+    char avoydables[4] = "xyz"; //exemplo 
+    avoydables[3] = '\0';
+
     // Create top and bottom windows
     int totalLines = LINES,totalColumns = COLS;
     
@@ -59,6 +73,7 @@ int main() {
     wborder(top_win, '|', '|', '-', '-', '+', '+', '+', '+');
 
     wborder(bottom_win, '|', '|', '-', '-', '+', '+', '+', '+');
+    mvwprintw(top_win,2,2,"%c",'x');
     
     writeWindowLabel("+Bottom",strlen("+Bottom"),bottom_win);
     writeWindowLabel("+-Janela de Jogo",strlen("+-Janela de Jogo"),top_win);
@@ -78,7 +93,7 @@ int main() {
         switch(ch) {
             case(KEY_UP):
                 mvwprintw(top_win, avatar1.y, avatar1.x, "%c",' ');
-                if(avatar1.y<minYAvatar){
+                if(avatar1.y<minYAvatar || !isAvoydable(avoydables,top_win,avatar1.x,avatar1.y-1)){
                 }else {
                 avatar1.y--;
 
@@ -90,7 +105,7 @@ int main() {
                 break;
             case (KEY_DOWN):
                 mvwprintw(top_win, avatar1.y, avatar1.x, "%c",' ');
-                if(avatar1.y>maxYAvatar) {
+                if(avatar1.y>maxYAvatar || !isAvoydable(avoydables,top_win,avatar1.x,avatar1.y+1)) {
                 } else {
                 avatar1.y++;
 
@@ -102,7 +117,7 @@ int main() {
                 break;
             case (KEY_LEFT):
                 mvwprintw(top_win, avatar1.y, avatar1.x, "%c",' ');
-                if(avatar1.x<minXAvatar) {
+                if(avatar1.x<minXAvatar  || !isAvoydable(avoydables,top_win,avatar1.x-1,avatar1.y)) {
                 } else {
                 avatar1.x--;
 
@@ -114,7 +129,7 @@ int main() {
                 break;
             case (KEY_RIGHT):
                 mvwprintw(top_win, avatar1.y, avatar1.x, "%c",' ');
-                if(avatar1.x>maxXAvatar) {
+                if(avatar1.x>maxXAvatar || !isAvoydable(avoydables,top_win,avatar1.x+1,avatar1.y)) {
                 } else {
                 avatar1.x++;
 

@@ -17,12 +17,22 @@ void writeWindowLabel(char string[], int tamanho, WINDOW* window) {
     }
 }
 
+typedef struct avatar {
+    char nome[20];
+    int x;
+    int y;
+    char icone;
+
+}avatar;
+
 
 int main() {
     initscr();
     cbreak();
     noecho();
     keypad(stdscr, TRUE);
+    
+    
 
     // Create top and bottom windows
     int totalLines = LINES,totalColumns = COLS;
@@ -68,7 +78,7 @@ int main() {
                 } else {
 
                 command[currCarr+1] = '\0';
-                mvwprintw(bottom_win,3,0,   "                         ");
+                mvwprintw(bottom_win,3,0,   "                                  ");
                 mvwprintw(bottom_win, 3, 0, "[Introduziu]: %s",command);
                 wrefresh(bottom_win);
                 }
@@ -80,7 +90,7 @@ int main() {
 
                 command[currCarr]='\0';
                 currCarr--;
-                mvwprintw(bottom_win,2,1,"                     ");
+                mvwprintw(bottom_win,2,1,"                                        ");
                 mvwprintw(bottom_win,2,1,"%s",command);
                 }
                 wrefresh(bottom_win);
@@ -88,10 +98,11 @@ int main() {
             default:
                 
                 if(isalnum(ch) || (ch==32)) {
-                    mvwprintw(bottom_win,2,++currCarr+1,"%c",ch);
+                    
                     if(currCarr>=STRINGSIZE-1) {
-
+                        
                     } else {
+                        mvwprintw(bottom_win,2,++currCarr+1,"%c",ch);
                         command[currCarr] = ch;
                     }
                     wrefresh(bottom_win);

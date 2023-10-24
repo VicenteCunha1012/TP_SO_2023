@@ -1,6 +1,8 @@
 #include <stdio.h>
 
+// NAO MEXER NO BOT -> VAI SER DADO
+
 int main() {
-    printf("\neu sou o bot\n");
+    printf("\neu nao devo ser mexido\n");
     return 0;
 }

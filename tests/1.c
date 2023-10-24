@@ -14,7 +14,7 @@
 #define maxYAvatar 13
 #define minYAvatar 2
 #define avoydablesSIZE 4 //a contar com \0
-#define windowArraySIZE
+#define windowArraySIZE 2
 //16x40(*2)
 
 void writeWindowLabel(char string[], int tamanho, WINDOW* window) {
@@ -68,6 +68,8 @@ int main() {
     avatar1.y = 10;
     avatar1.icone = '1'; 
 
+    int terminalEnabled=1; //1 se sim 0 se jogo
+
     char avoydables[4] = "xyz"; //exemplo 
     avoydables[3] = '\0';
 
@@ -100,29 +102,36 @@ int main() {
     while (ch = getch()) {
         switch(ch) {
             case(KEY_UP):
-                mvwprintw(top_win, avatar1.y, avatar1.x, "%c",' ');
-                if(avatar1.y<minYAvatar || !isAvoydable(avoydables,top_win,avatar1.x,avatar1.y-1)){
-                }else {
-                avatar1.y--;
+                if(!terminalEnabled) {
+                    mvwprintw(top_win, avatar1.y, avatar1.x, "%c",' ');
+                    if(avatar1.y<minYAvatar || !isAvoydable(avoydables,top_win,avatar1.x,avatar1.y-1)){
+                    }else {
+                     avatar1.y--;
 
                 }
                 posicionarAvatar(avatar1, top_win);
                 //mvwprintw(top_win, avatar1.y, avatar1.x, "%c",avatar1.icone);
+                }
+                
 
                 break;
             case (KEY_DOWN):
-                mvwprintw(top_win, avatar1.y, avatar1.x, "%c",' ');
-                if(avatar1.y>maxYAvatar || !isAvoydable(avoydables,top_win,avatar1.x,avatar1.y+1)) {
-                } else {
-                avatar1.y++;
+                if(!terminalEnabled) {
+                    mvwprintw(top_win, avatar1.y, avatar1.x, "%c",' ');
+                    if(avatar1.y>maxYAvatar || !isAvoydable(avoydables,top_win,avatar1.x,avatar1.y+1)) {
+                    }else {
+                    avatar1.y++;
 
                 }
                 posicionarAvatar(avatar1, top_win);
                 //mvwprintw(top_win, avatar1.y, avatar1.x, "%c",avatar1.icone);
+                }
+                
 
                 break;
             case (KEY_LEFT):
-                mvwprintw(top_win, avatar1.y, avatar1.x, "%c",' ');
+                if(!terminalEnabled) {
+                   mvwprintw(top_win, avatar1.y, avatar1.x, "%c",' ');
                 if(avatar1.x<minXAvatar  || !isAvoydable(avoydables,top_win,avatar1.x-1,avatar1.y)) {
                 } else {
                 avatar1.x--;
@@ -130,9 +139,12 @@ int main() {
                 }
                 posicionarAvatar(avatar1, top_win);
                 //mvwprintw(top_win, avatar1.y, avatar1.x, "%c",avatar1.icone);
+                }
+                
 
                 break;
             case (KEY_RIGHT):
+                if(!terminalEnabled) {
                 mvwprintw(top_win, avatar1.y, avatar1.x, "%c",' ');
                 if(avatar1.x>maxXAvatar || !isAvoydable(avoydables,top_win,avatar1.x+1,avatar1.y)) {
                 } else {
@@ -141,34 +153,37 @@ int main() {
                 }
                 posicionarAvatar(avatar1, top_win);
                 //mvwprintw(top_win, avatar1.y, avatar1.x, "%c",avatar1.icone);
-
+                }
                 break;    
             case ('\n'):
-                if(!strcmp(command,"clear")) {
-                    memset(command,0,STRINGSIZE);
-                    currCarr=-1;
-                } else {
+                if(terminalEnabled) {
 
                 command[currCarr+1] = '\0';
                 mvwprintw(bottom_win,bottomHeight-3,1,   "                                  ");
                 mvwprintw(bottom_win, bottomHeight-3, 1, "[Introduziu]: %s",command);
+                terminalEnabled=!terminalEnabled;
                 }
+                
                 break;
             case (KEY_BACKSPACE):
-                if(currCarr<0) {
+                if(terminalEnabled) {
+                    if(currCarr<0) {
 
-                } else {
+                    } else {
 
                 command[currCarr]='\0';
                 currCarr--;
                 mvwprintw(bottom_win,bottomHeight-2,4,"                                        ");
                 mvwprintw(bottom_win,bottomHeight-2,4,"%s",command);
+                    }
                 }
                 
-
+                
+            
             default:
                 
-                if(isalnum(ch) || (ch==32)) {
+                if(isalnum(ch) || (ch==32) && terminalEnabled) {
+                    
                     
                     if(currCarr>=STRINGSIZE-1) {
                         
@@ -177,11 +192,16 @@ int main() {
                         mvwprintw(bottom_win,bottomHeight-2,++currCarr+4,"%c",ch);
                         command[currCarr] = ch;
                     }
+                } else {
+                    if(ch==32 && !terminalEnabled) {
+                        terminalEnabled=!terminalEnabled;
+                    }
                 }
+                break;
 
 
         }
-        refreshAll(windows,2);
+        refreshAll(windows,windowArraySIZE);
     }
 
     noraw();

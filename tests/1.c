@@ -9,6 +9,10 @@
 #define bottomHeight 10
 #define bottomWidth  30*2
 #define bottomDistFromTop 1
+#define maxXAvatar 77
+#define minXAvatar 2
+#define maxYAvatar 13
+#define minYAvatar 2
 //16x40(*2)
 
 void writeWindowLabel(char string[], int tamanho, WINDOW* window) {
@@ -29,9 +33,6 @@ void posicionarAvatar(avatar avat, WINDOW* window) {
     mvwprintw(window, avat.y,avat.x,"%c",avat.icone);
 }
 
-void estacionaCursor(WINDOW* window) {
-    writeWindowLabel("+",strlen("+"),window);
-}
 
 
 
@@ -77,7 +78,11 @@ int main() {
         switch(ch) {
             case(KEY_UP):
                 mvwprintw(top_win, avatar1.y, avatar1.x, "%c",' ');
+                if(avatar1.y<minYAvatar){
+                }else {
                 avatar1.y--;
+
+                }
                 posicionarAvatar(avatar1, top_win);
                 //mvwprintw(top_win, avatar1.y, avatar1.x, "%c",avatar1.icone);
 
@@ -85,7 +90,11 @@ int main() {
                 break;
             case (KEY_DOWN):
                 mvwprintw(top_win, avatar1.y, avatar1.x, "%c",' ');
+                if(avatar1.y>maxYAvatar) {
+                } else {
                 avatar1.y++;
+
+                }
                 posicionarAvatar(avatar1, top_win);
                 //mvwprintw(top_win, avatar1.y, avatar1.x, "%c",avatar1.icone);
 
@@ -93,7 +102,11 @@ int main() {
                 break;
             case (KEY_LEFT):
                 mvwprintw(top_win, avatar1.y, avatar1.x, "%c",' ');
+                if(avatar1.x<minXAvatar) {
+                } else {
                 avatar1.x--;
+
+                }
                 posicionarAvatar(avatar1, top_win);
                 //mvwprintw(top_win, avatar1.y, avatar1.x, "%c",avatar1.icone);
 
@@ -101,7 +114,11 @@ int main() {
                 break;
             case (KEY_RIGHT):
                 mvwprintw(top_win, avatar1.y, avatar1.x, "%c",' ');
+                if(avatar1.x>maxXAvatar) {
+                } else {
                 avatar1.x++;
+
+                }
                 posicionarAvatar(avatar1, top_win);
                 //mvwprintw(top_win, avatar1.y, avatar1.x, "%c",avatar1.icone);
 
@@ -147,7 +164,6 @@ int main() {
 
 
         }
-        estacionaCursor(bottom_win);
     }
 
     noraw();

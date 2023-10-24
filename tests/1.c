@@ -25,14 +25,29 @@ typedef struct avatar {
 
 }avatar;
 
+void posicionarAvatar(avatar avat, WINDOW* window) {
+    mvwprintw(window, avat.y,avat.x,"%c",avat.icone);
+}
+
+void estacionaCursor(WINDOW* window) {
+    writeWindowLabel("+",strlen("+"),window);
+}
+
+
+
+
 
 int main() {
     initscr();
     cbreak();
     noecho();
     keypad(stdscr, TRUE);
-    
-    
+
+    avatar avatar1;
+    strcpy(avatar1.nome,"nome1");
+    avatar1.x = 10;
+    avatar1.y = 10;
+    avatar1.icone = '1'; 
 
     // Create top and bottom windows
     int totalLines = LINES,totalColumns = COLS;
@@ -61,15 +76,37 @@ int main() {
     while (ch = getch()) {
         switch(ch) {
             case(KEY_UP):
-                mvwprintw(top_win, 1, 1, "Pressed%d",++upCount);
+                mvwprintw(top_win, avatar1.y, avatar1.x, "%c",' ');
+                avatar1.y--;
+                posicionarAvatar(avatar1, top_win);
+                //mvwprintw(top_win, avatar1.y, avatar1.x, "%c",avatar1.icone);
 
                 wrefresh(top_win);
                 break;
             case (KEY_DOWN):
-                mvwprintw(bottom_win, 1, 1, "Pressed%d",++downCount);
-                
-                wrefresh(bottom_win);
+                mvwprintw(top_win, avatar1.y, avatar1.x, "%c",' ');
+                avatar1.y++;
+                posicionarAvatar(avatar1, top_win);
+                //mvwprintw(top_win, avatar1.y, avatar1.x, "%c",avatar1.icone);
+
+                wrefresh(top_win);
                 break;
+            case (KEY_LEFT):
+                mvwprintw(top_win, avatar1.y, avatar1.x, "%c",' ');
+                avatar1.x--;
+                posicionarAvatar(avatar1, top_win);
+                //mvwprintw(top_win, avatar1.y, avatar1.x, "%c",avatar1.icone);
+
+                wrefresh(top_win);
+                break;
+            case (KEY_RIGHT):
+                mvwprintw(top_win, avatar1.y, avatar1.x, "%c",' ');
+                avatar1.x++;
+                posicionarAvatar(avatar1, top_win);
+                //mvwprintw(top_win, avatar1.y, avatar1.x, "%c",avatar1.icone);
+
+                wrefresh(top_win);
+                break;    
             case ('\n'):
                 if(!strcmp(command,"clear")) {
                     memset(command,0,STRINGSIZE);
@@ -110,6 +147,7 @@ int main() {
 
 
         }
+        estacionaCursor(bottom_win);
     }
 
     noraw();

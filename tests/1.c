@@ -44,6 +44,12 @@ int isAvoydable(char avoydables[],WINDOW* window, int x, int y) {
     return 1;
 }
 
+void refreshAll(WINDOW* windows[],int tamanho) {
+    for(int i=0;i<tamanho;i++) {
+        wrefresh(windows[i]);
+    }
+}
+
 
 
 
@@ -69,6 +75,7 @@ int main() {
     
     WINDOW *top_win = newwin(topHeight, topWidth, 0, (COLS-topWidth)/2);
     WINDOW *bottom_win = newwin(bottomHeight, bottomWidth, (topHeight+bottomDistFromTop), (COLS-bottomWidth)/2);
+    WINDOW* windows[2] = {top_win,bottom_win};
 
     wborder(top_win, '|', '|', '-', '-', '+', '+', '+', '+');
 
@@ -101,7 +108,6 @@ int main() {
                 posicionarAvatar(avatar1, top_win);
                 //mvwprintw(top_win, avatar1.y, avatar1.x, "%c",avatar1.icone);
 
-                wrefresh(top_win);
                 break;
             case (KEY_DOWN):
                 mvwprintw(top_win, avatar1.y, avatar1.x, "%c",' ');
@@ -113,7 +119,6 @@ int main() {
                 posicionarAvatar(avatar1, top_win);
                 //mvwprintw(top_win, avatar1.y, avatar1.x, "%c",avatar1.icone);
 
-                wrefresh(top_win);
                 break;
             case (KEY_LEFT):
                 mvwprintw(top_win, avatar1.y, avatar1.x, "%c",' ');
@@ -125,7 +130,6 @@ int main() {
                 posicionarAvatar(avatar1, top_win);
                 //mvwprintw(top_win, avatar1.y, avatar1.x, "%c",avatar1.icone);
 
-                wrefresh(top_win);
                 break;
             case (KEY_RIGHT):
                 mvwprintw(top_win, avatar1.y, avatar1.x, "%c",' ');
@@ -137,19 +141,16 @@ int main() {
                 posicionarAvatar(avatar1, top_win);
                 //mvwprintw(top_win, avatar1.y, avatar1.x, "%c",avatar1.icone);
 
-                wrefresh(top_win);
                 break;    
             case ('\n'):
                 if(!strcmp(command,"clear")) {
                     memset(command,0,STRINGSIZE);
                     currCarr=-1;
-                    wrefresh(bottom_win);
                 } else {
 
                 command[currCarr+1] = '\0';
-                mvwprintw(bottom_win,3,0,   "                                  ");
-                mvwprintw(bottom_win, 3, 0, "[Introduziu]: %s",command);
-                wrefresh(bottom_win);
+                mvwprintw(bottom_win,bottomHeight-3,1,   "                                  ");
+                mvwprintw(bottom_win, bottomHeight-3, 1, "[Introduziu]: %s",command);
                 }
                 break;
             case (KEY_BACKSPACE):
@@ -159,10 +160,10 @@ int main() {
 
                 command[currCarr]='\0';
                 currCarr--;
-                mvwprintw(bottom_win,2,1,"                                        ");
-                mvwprintw(bottom_win,2,1,"%s",command);
+                mvwprintw(bottom_win,bottomHeight-2,4,"                                        ");
+                mvwprintw(bottom_win,bottomHeight-2,4,"%s",command);
                 }
-                wrefresh(bottom_win);
+                
 
             default:
                 
@@ -171,14 +172,15 @@ int main() {
                     if(currCarr>=STRINGSIZE-1) {
                         
                     } else {
-                        mvwprintw(bottom_win,2,++currCarr+1,"%c",ch);
+                        mvwprintw(bottom_win,bottomHeight-2,1,"%s","-->");
+                        mvwprintw(bottom_win,bottomHeight-2,++currCarr+4,"%c",ch);
                         command[currCarr] = ch;
                     }
-                    wrefresh(bottom_win);
                 }
 
 
         }
+        refreshAll(windows,2);
     }
 
     noraw();

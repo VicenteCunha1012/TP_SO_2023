@@ -14,6 +14,7 @@
 #define maxYAvatar 13
 #define minYAvatar 2
 #define avoydablesSIZE 4 //a contar com \0
+#define windowArraySIZE
 //16x40(*2)
 
 void writeWindowLabel(char string[], int tamanho, WINDOW* window) {
@@ -75,7 +76,7 @@ int main() {
     
     WINDOW *top_win = newwin(topHeight, topWidth, 0, (COLS-topWidth)/2);
     WINDOW *bottom_win = newwin(bottomHeight, bottomWidth, (topHeight+bottomDistFromTop), (COLS-bottomWidth)/2);
-    WINDOW* windows[2] = {top_win,bottom_win};
+    WINDOW* windows[windowArraySIZE] = {top_win,bottom_win};
 
     wborder(top_win, '|', '|', '-', '-', '+', '+', '+', '+');
 

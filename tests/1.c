@@ -6,13 +6,21 @@
 #define STRINGSIZE 20
 #define topHeight 16
 #define topWidth 40*2
-#define bottomHeight 14
+#define bottomHeight 10
 #define bottomWidth  30*2
+#define bottomDistFromTop 1
 //16x40(*2)
 
 void writeWindowLabel(char string[], int tamanho, WINDOW* window) {
     for(int i=0;i<tamanho;i++) {
         mvwaddch(window,0,i,string[i]);
+    }
+}
+
+
+void mvwprintstr(char string[], int tamanho, int x,int y, WINDOW* window) {
+    for(int i=0;i<tamanho;i++) {
+        mvwprintw(window, x+i,y,"%c",string[i]);
     }
 }
 
@@ -26,7 +34,7 @@ int main() {
     int totalLines = LINES,totalColumns = COLS;
     
     WINDOW *top_win = newwin(topHeight, topWidth, 0, (COLS-topWidth)/2);
-    WINDOW *bottom_win = newwin(bottomHeight, bottomWidth, (COLS-bottomWidth)/2, 0);
+    WINDOW *bottom_win = newwin(bottomHeight, bottomWidth, (topHeight+bottomDistFromTop), (COLS-bottomWidth)/2);
 
     wborder(top_win, '|', '|', '-', '-', '+', '+', '+', '+');
 
@@ -70,6 +78,12 @@ int main() {
                 wrefresh(bottom_win);
                 }
                 break;
+            case (KEY_BACKSPACE):
+                command[currCarr]='\0';
+                currCarr--;
+                mvwprintw(bottom_win,2,0,"                     ");
+                mvwprintw(bottom_win,2,0,command);
+                wrefresh(bottom_win);
 
             default:
                 

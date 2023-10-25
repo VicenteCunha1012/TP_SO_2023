@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
+#include <unistd.h>
 
 #define STRING_SIZE 20
 #define TOP_SCREEN_HEIGTH 16
@@ -92,6 +93,7 @@ int main(int argc, char **argv) {
     drawBorder(topWindow, bottomWindow);
     mvwprintw(topWindow, 2, 2, "%c", 'x');
     
+    ungetch('.'); //NAO TOCAR
     getch();    
     wrefresh(topWindow);
     wrefresh(bottomWindow);

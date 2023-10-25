@@ -1,6 +1,6 @@
 #include "helpersJogoUI.h"
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
     if(argc != 2) {
         fprintf(stderr, "Erro: Sintaxe Invalida. Por favor introduza o seu nome\nExemplo: ./jogoUI \"John Doe\"\n");
         exit(0);

@@ -11,11 +11,12 @@
 #define PADDING 1
 #define AVOYDABLES_SIZE 4 
 #define N_WINDOWS 2
+#define KEY_SPACEBAR 32
 //16x40(*2)
 
-void writeWindowLabel(char string[], int tamanho, WINDOW* window) {
-    for(int i=0;i<tamanho;i++) {
-        mvwaddch(window,0,i,string[i]);
+void writeWindowLabel(char string[], int size, WINDOW* window) {
+    for(int i = 0; i < size; ++i) {
+        mvwaddch(window, 0, i, string[i]);
     }
 }
 
@@ -47,8 +48,9 @@ void refreshAll(WINDOW* windows[]) {
     }
 }
 
-void initScreen() {
-
+void initScreen(WINDOW *topWindow, WINDOW *bottomWindow) {
+    wborder(topWindow, '|', '|', '-', '-', '+', '+', '+', '+');
+    wborder(bottomWindow, '|', '|', '-', '-', '+', '+', '+', '+');
 }
 
 int main() {
@@ -57,124 +59,76 @@ int main() {
     noecho();
     keypad(stdscr, TRUE);
 
-    Avatar avatar1;
-    strcpy(avatar1.nome,"nome1");
-    avatar1.x = 10;
-    avatar1.y = 10;
-    avatar1.icone = '1'; 
-
-    int terminalEnabled = 0;
+    Avatar avatar1 = {"nome1", 10, 10, '1'};
 
     char avoydables[4] = "x|-"; //exemplo 
     avoydables[3] = '\0';
-
-    // Create top and bottom windows
-    int totalLines = LINES,totalColumns = COLS;
     
-    WINDOW *top_win = newwin(TOP_SCREEN_HEIGTH, TOP_SCREEN_WIDTH, 0, (COLS-TOP_SCREEN_WIDTH)/2);
-    WINDOW *bottom_win = newwin(BOTTOM_SCREEN_HEIGTH, BOTTOM_SCREEN_WIDTH, (TOP_SCREEN_HEIGTH+PADDING), (COLS-BOTTOM_SCREEN_WIDTH)/2);
-    WINDOW* windows[N_WINDOWS] = {top_win,bottom_win};
+    WINDOW *topWindow = newwin(TOP_SCREEN_HEIGTH, TOP_SCREEN_WIDTH, 0, (COLS - TOP_SCREEN_WIDTH) / 2);
+    WINDOW *bottomWindow= newwin(BOTTOM_SCREEN_HEIGTH, BOTTOM_SCREEN_WIDTH, (TOP_SCREEN_HEIGTH + PADDING), (COLS - BOTTOM_SCREEN_WIDTH) / 2);
+    WINDOW* windows[N_WINDOWS] = {topWindow, bottomWindow};
 
-    wborder(top_win, '|', '|', '-', '-', '+', '+', '+', '+');
-
-    wborder(bottom_win, '|', '|', '-', '-', '+', '+', '+', '+');
-    mvwprintw(top_win,2,2,"%c",'x');
+    initScreen(topWindow, bottomWindow);
+    mvwprintw(topWindow, 2, 2, "%c", 'x');
     
-    writeWindowLabel("+Bottom",strlen("+Bottom"),bottom_win);
-    writeWindowLabel("+-Janela de Jogo",strlen("+-Janela de Jogo"),top_win);
-    
-
     getch();
-    wrefresh(top_win);
-    wrefresh(bottom_win);
+    wrefresh(topWindow);
+    wrefresh(bottomWindow);
 
-    int ch;
-    int downCount=0,upCount=0;
-    int upX=0,upY=0;
-    int currCarr=-1;
+    int key;
     char command[STRING_SIZE];
-    while (ch = getch()) {
-        if(!terminalEnabled) {
-            switch(ch) {
-            case(KEY_UP):
-                mvwprintw(top_win, avatar1.y, avatar1.x, "%c",' ');
-                if(isAvoydable(avoydables,top_win,avatar1.x,avatar1.y-1)){
-                    avatar1.y--;
-                }
-                posicionarAvatar(avatar1, top_win);
-                break;
-
-            case (KEY_DOWN):
-                mvwprintw(top_win, avatar1.y, avatar1.x, "%c",' ');
-                if(isAvoydable(avoydables,top_win,avatar1.x,avatar1.y+1)) {
-                    avatar1.y++;
-                }
-                posicionarAvatar(avatar1, top_win);
-                break;
-
-            case (KEY_LEFT):
-                mvwprintw(top_win, avatar1.y, avatar1.x, "%c",' ');
-                if(isAvoydable(avoydables,top_win,avatar1.x-1,avatar1.y)) {
-                    avatar1.x--;
-
-                }
-                posicionarAvatar(avatar1, top_win);
-                break;
-
-            case (KEY_RIGHT):
-                mvwprintw(top_win, avatar1.y, avatar1.x, "%c",' ');
-                if(isAvoydable(avoydables,top_win,avatar1.x+1,avatar1.y)) {
-                    avatar1.x++;
-                }
-                posicionarAvatar(avatar1, top_win);
-                break; 
-
-            case(32):
-                terminalEnabled=!terminalEnabled;
-                break;
-
+    while (key = getch()) {
+        switch(key) {
+        case(KEY_UP):
+            mvwprintw(topWindow, avatar1.y, avatar1.x, "%c", ' ');
+            if(isAvoydable(avoydables, topWindow, avatar1.x, avatar1.y - 1)){
+                avatar1.y--;
             }
-        } else {
-            /*switch(ch) {
-            case ('\n'):
-                command[currCarr+1] = '\0';
-                mvwprintw(bottom_win,BOTTOM_SCREEN_HEIGTH-3,1,   "                                  ");
-                mvwprintw(bottom_win, BOTTOM_SCREEN_HEIGTH-3, 1, "[Introduziu]: %s",command);
-                terminalEnabled=!terminalEnabled;
-                break;
+            posicionarAvatar(avatar1, topWindow);
+            break;
 
-            case (KEY_BACKSPACE):
-                if(currCarr >= 0) {
-                    command[currCarr]='\0';
-                    currCarr--;
-                    mvwprintw(bottom_win,BOTTOM_SCREEN_HEIGTH-2,4,"                                        ");
-                    mvwprintw(bottom_win,BOTTOM_SCREEN_HEIGTH-2,4,"%s",command);
-                }
-                
-            default:
-            */    if(currCarr < STRING_SIZE-1) {
-                    mvwprintw(bottom_win,BOTTOM_SCREEN_HEIGTH-2,1,"%s","-->");
-                    echo();
-                    wmove(bottom_win, BOTTOM_SCREEN_HEIGTH - 2, 5);
-                    wgetstr(bottom_win, command);
-                    noecho();
-                    wmove(bottom_win, BOTTOM_SCREEN_HEIGTH - 2, 5);
-                    mvwprintw(bottom_win,BOTTOM_SCREEN_HEIGTH-2,4,"                                        ");
-                    mvwprintw(bottom_win, BOTTOM_SCREEN_HEIGTH-3, 1, "[Introduziu]: %s",command);
-                    terminalEnabled = 0;
-                    //mvwprintw(bottom_win,BOTTOM_SCREEN_HEIGTH-2,++currCarr+4,"%c",ch);
-                    //command[currCarr] = ch;
-                }
-                //break;
-            //}
+        case (KEY_DOWN):
+            mvwprintw(topWindow, avatar1.y, avatar1.x, "%c", ' ');
+            if(isAvoydable(avoydables, topWindow, avatar1.x, avatar1.y + 1)) {
+                avatar1.y++;
+            }
+            posicionarAvatar(avatar1, topWindow);
+            break;
+
+        case (KEY_LEFT):
+            mvwprintw(topWindow, avatar1.y, avatar1.x, "%c", ' ');
+            if(isAvoydable(avoydables, topWindow, avatar1.x - 1, avatar1.y)) {
+                avatar1.x--;
+            }
+            posicionarAvatar(avatar1, topWindow);
+            break;
+
+        case (KEY_RIGHT):
+            mvwprintw(topWindow, avatar1.y, avatar1.x, "%c", ' ');
+            if(isAvoydable(avoydables, topWindow, avatar1.x + 1, avatar1.y)) {
+                avatar1.x++;
+            }
+            posicionarAvatar(avatar1, topWindow);
+            break; 
+
+        case(KEY_SPACEBAR):
+            mvwprintw(bottomWindow, BOTTOM_SCREEN_HEIGTH - 2, 1, "%s" ,"-->");
+            echo();
+            wmove(bottomWindow, BOTTOM_SCREEN_HEIGTH - 2, 5);
+            wgetstr(bottomWindow, command);
+            noecho();
+            wmove(bottomWindow, BOTTOM_SCREEN_HEIGTH - 2, 5);
+            mvwprintw(bottomWindow,BOTTOM_SCREEN_HEIGTH - 2, 4,"                                        ");
+            mvwprintw(bottomWindow, BOTTOM_SCREEN_HEIGTH - 3, 1, "[Introduziu]: %s",command);
+            break;
         }
-        
+ 
         refreshAll(windows);
     }
 
     noraw();
-    delwin(top_win);
-    delwin(bottom_win);
+    delwin(topWindow);
+    delwin(bottomWindow);
     endwin();
     refresh();
 

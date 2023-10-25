@@ -49,7 +49,7 @@ void refreshAll(WINDOW* windows[]) {
     }
 }
 
-void drawScreen(WINDOW *topWindow, WINDOW *bottomWindow) {
+void drawBorder(WINDOW *topWindow, WINDOW *bottomWindow) {
     wborder(topWindow, '|', '|', '-', '-', '+', '+', '+', '+');
     wborder(bottomWindow, '|', '|', '-', '-', '+', '+', '+', '+');
 }
@@ -89,7 +89,7 @@ int main(int argc, char **argv) {
     WINDOW *bottomWindow= newwin(BOTTOM_SCREEN_HEIGTH, BOTTOM_SCREEN_WIDTH, (TOP_SCREEN_HEIGTH + PADDING), (COLS - BOTTOM_SCREEN_WIDTH) / 2);
     WINDOW* windows[N_WINDOWS] = {topWindow, bottomWindow};
 
-    drawScreen(topWindow, bottomWindow);
+    drawBorder(topWindow, bottomWindow);
     mvwprintw(topWindow, 2, 2, "%c", 'x');
     
     getch();    
@@ -136,9 +136,9 @@ int main(int argc, char **argv) {
             mvwprintw(bottomWindow, COMMAND_LINE_Y, 1, "%s" ,"-->");
             getCommandLine(bottomWindow, command);                  //TODO: AFTER THIS, SEND MESSAGE TO THE "MOTOR", MAYBE MAKE A PACKET STRUCT WITH THE NAME AND MESSAGE
             
-            //wmove(bottomWindow, COMMAND_LINE_Y, COMMAND_LINE_X);
-            //mvwprintw(bottomWindow, COMMAND_LINE_Y, COMMAND_LINE_X, "                                        ");
-            //mvwprintw(bottomWindow, BOTTOM_SCREEN_HEIGTH - 3, 1, "[%s]: %s", avatar1.nome, command);
+            wmove(bottomWindow, COMMAND_LINE_Y, COMMAND_LINE_X);
+            mvwprintw(bottomWindow, COMMAND_LINE_Y, COMMAND_LINE_X, "                                        ");
+            mvwprintw(bottomWindow, BOTTOM_SCREEN_HEIGTH - 3, 1, "[%s]: %s", avatar1.nome, command);
             break;
         }
  

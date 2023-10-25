@@ -8,6 +8,8 @@
 #define TOP_SCREEN_WIDTH 40*2
 #define BOTTOM_SCREEN_HEIGTH 10
 #define BOTTOM_SCREEN_WIDTH  30*2
+#define COMMAND_LINE_X 5
+#define COMMAND_LINE_Y BOTTOM_SCREEN_HEIGTH - 2
 #define PADDING 1
 #define AVOYDABLES_SIZE 4 
 #define N_WINDOWS 2
@@ -48,17 +50,37 @@ void refreshAll(WINDOW* windows[]) {
     }
 }
 
-void initScreen(WINDOW *topWindow, WINDOW *bottomWindow) {
+void drawScreen(WINDOW *topWindow, WINDOW *bottomWindow) {
     wborder(topWindow, '|', '|', '-', '-', '+', '+', '+', '+');
     wborder(bottomWindow, '|', '|', '-', '-', '+', '+', '+', '+');
 }
 
-int main() {
+void initScreen() {
     initscr();
     cbreak();
     noecho();
     keypad(stdscr, TRUE);
     curs_set(0);
+}
+
+void getCommandLine(WINDOW *bottomWindow, char *command) {
+    echo();
+    curs_set(2);
+    wmove(bottomWindow, COMMAND_LINE_Y, COMMAND_LINE_X);
+    wgetnstr(bottomWindow, command, 19);
+    noecho();
+    curs_set(0);
+}
+
+int main(int argc, char **argv) {
+    if(argc != 2) {
+        fprintf(stderr, "Erro: Sintaxe Invalida. Por favor introduza o seu nome\nExemplo: ./jogoUI \"John Doe\"\n");
+        exit(0);
+    }
+
+
+    initScreen();
+
     Avatar avatar1 = {"nome1", 10, 10, '1'};
 
     char avoydables[4] = "x|-"; //exemplo 
@@ -68,7 +90,7 @@ int main() {
     WINDOW *bottomWindow= newwin(BOTTOM_SCREEN_HEIGTH, BOTTOM_SCREEN_WIDTH, (TOP_SCREEN_HEIGTH + PADDING), (COLS - BOTTOM_SCREEN_WIDTH) / 2);
     WINDOW* windows[N_WINDOWS] = {topWindow, bottomWindow};
 
-    initScreen(topWindow, bottomWindow);
+    drawScreen(topWindow, bottomWindow);
     mvwprintw(topWindow, 2, 2, "%c", 'x');
     
     getch();    
@@ -112,15 +134,10 @@ int main() {
             break; 
 
         case(KEY_SPACEBAR):
-            mvwprintw(bottomWindow, BOTTOM_SCREEN_HEIGTH - 2, 1, "%s" ,"-->");
-            echo();
-            curs_set(2);
-            wmove(bottomWindow, BOTTOM_SCREEN_HEIGTH - 2, 5);
-            wgetstr(bottomWindow, command);
-            noecho();
-            curs_set(0);
-            wmove(bottomWindow, BOTTOM_SCREEN_HEIGTH - 2, 5);
-            mvwprintw(bottomWindow,BOTTOM_SCREEN_HEIGTH - 2, 4,"                                        ");
+            mvwprintw(bottomWindow, COMMAND_LINE_Y, 1, "%s" ,"-->");
+            getCommandLine(bottomWindow, command);
+            wmove(bottomWindow, COMMAND_LINE_Y, COMMAND_LINE_X);
+            mvwprintw(bottomWindow, COMMAND_LINE_Y, COMMAND_LINE_X, "                                        ");
             mvwprintw(bottomWindow, BOTTOM_SCREEN_HEIGTH - 3, 1, "[Introduziu]: %s",command);
             break;
         }

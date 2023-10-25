@@ -58,7 +58,7 @@ int main() {
     cbreak();
     noecho();
     keypad(stdscr, TRUE);
-
+    curs_set(0);
     Avatar avatar1 = {"nome1", 10, 10, '1'};
 
     char avoydables[4] = "x|-"; //exemplo 
@@ -71,7 +71,7 @@ int main() {
     initScreen(topWindow, bottomWindow);
     mvwprintw(topWindow, 2, 2, "%c", 'x');
     
-    getch();
+    getch();    
     wrefresh(topWindow);
     wrefresh(bottomWindow);
 
@@ -114,9 +114,11 @@ int main() {
         case(KEY_SPACEBAR):
             mvwprintw(bottomWindow, BOTTOM_SCREEN_HEIGTH - 2, 1, "%s" ,"-->");
             echo();
+            curs_set(2);
             wmove(bottomWindow, BOTTOM_SCREEN_HEIGTH - 2, 5);
             wgetstr(bottomWindow, command);
             noecho();
+            curs_set(0);
             wmove(bottomWindow, BOTTOM_SCREEN_HEIGTH - 2, 5);
             mvwprintw(bottomWindow,BOTTOM_SCREEN_HEIGTH - 2, 4,"                                        ");
             mvwprintw(bottomWindow, BOTTOM_SCREEN_HEIGTH - 3, 1, "[Introduziu]: %s",command);

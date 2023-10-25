@@ -27,7 +27,6 @@ typedef struct {
     int x;
     int y;
     char icone;
-
 } Avatar;
 
 void posicionarAvatar(Avatar avatar, WINDOW* window) {
@@ -133,12 +132,13 @@ int main(int argc, char **argv) {
             posicionarAvatar(avatar1, topWindow);
             break; 
 
-        case(KEY_SPACEBAR):
+        case(KEY_SPACEBAR):                     //TODO: PROBABLYE NEED TO SEND THE MESSAGE TO THE "MOTOR" TO DISPLAY IN EVERY SCREEN
             mvwprintw(bottomWindow, COMMAND_LINE_Y, 1, "%s" ,"-->");
-            getCommandLine(bottomWindow, command);
-            wmove(bottomWindow, COMMAND_LINE_Y, COMMAND_LINE_X);
-            mvwprintw(bottomWindow, COMMAND_LINE_Y, COMMAND_LINE_X, "                                        ");
-            mvwprintw(bottomWindow, BOTTOM_SCREEN_HEIGTH - 3, 1, "[Introduziu]: %s",command);
+            getCommandLine(bottomWindow, command);                  //TODO: AFTER THIS, SEND MESSAGE TO THE "MOTOR", MAYBE MAKE A PACKET STRUCT WITH THE NAME AND MESSAGE
+            
+            //wmove(bottomWindow, COMMAND_LINE_Y, COMMAND_LINE_X);
+            //mvwprintw(bottomWindow, COMMAND_LINE_Y, COMMAND_LINE_X, "                                        ");
+            //mvwprintw(bottomWindow, BOTTOM_SCREEN_HEIGTH - 3, 1, "[%s]: %s", avatar1.nome, command);
             break;
         }
  

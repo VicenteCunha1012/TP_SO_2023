@@ -5,12 +5,11 @@
 #include <stddef.h>
 #include <stdio.h>
 
-#define COMMANDBUFFERSIZE 40
-#define MAXUSERS 5
-#define MAXBOTS 10
-#define MAXROCKS 50
-#define MAXLEVELS 3
-#define MAXROLLINGSTONES 3
+#define COMMAND_BUFFERSIZE 40
+#define MAX_BOTS 10
+#define MAX_ROCKS 50
+#define MAX_LEVELS 3
+#define MAX_ROLLINGSTONES 3
 
 typedef void (*CommandFunc)(char* args);
 

@@ -1,11 +1,13 @@
-#include <stdio.h>
+#include "helpersMotor.h"
 #include "comandosMotor.h"
 
-
-// char* createMap(char* file) -> return map
-
 int main(int argc, char **argv) {
-    char commandInput[COMMANDBUFFERSIZE];
+    char mapBuffer[MAP_ROWS][MAP_COLUMNS];
+    Avatar users[MAX_USERS];
+
+
+
+    char commandInput[COMMAND_BUFFERSIZE];
     readCommand(commandInput, sizeof(commandInput));
     handleCommand(commandInput);
     return 0;

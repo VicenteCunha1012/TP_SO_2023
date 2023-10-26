@@ -5,6 +5,10 @@
 #define READ 0
 #define WRITE 1
 
+#define NAME_LENGTH 20
+#define HEADER_SIZE 3
+#define COMMAND_PACKET_SIZE 50
+
 /*
 	Precisa:
 		-> Array dos jogadores
@@ -24,6 +28,26 @@
 		-> Enviar estado ao motor (x, y, etc)
 		-> Motor envia estado aos players	
 */
+typedef struct {
+    typedef struct {
+        char nome[NAME_LENGTH];
+        int x,y;
+        char icone=nome[0];
+    }avatar;
+    pid_t PID;
+
+}jogador;
+
+typedef struct {
+    char header[HEADER_SIZE];
+    union dados{
+        int x;
+        char mensagem[COMMAND_PACKET_SIZE];
+    }dados;
+}packet;
+
+
+
 
 
 

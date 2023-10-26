@@ -30,7 +30,7 @@
 int main(int argc, char **argv) {
     char mapBuffer[MAP_ROWS][MAP_COLUMNS];
     Avatar users[MAX_USERS];
-    
+    int currentPlayers = 0;
     //Exemplo de como receber estrutura do jogoUI
     
     int fd;
@@ -40,6 +40,12 @@ int main(int argc, char **argv) {
     read(fd, &tempAvatar, sizeof(Avatar));
     close(fd);
     printf("%s", tempAvatar.nome);
+    
+    while(currentPlayers < 4) {
+    	// Wait for new players
+    	// 
+    }
+    
     
     //Exemplo de como receber dados do bot
 	/*

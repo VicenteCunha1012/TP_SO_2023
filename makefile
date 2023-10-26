@@ -6,27 +6,26 @@ CFLAGS = -Wall -Wextra
 LDLIBS = -lncurses
 
 # Directories
-BOT_DIR = bot
-JOGOUI_DIR = jogoUI
-MOTOR_DIR = motor
+SRC_DIR = src
+HEADERS_DIR = src/headers
 
 # Executables
-BOT_EXEC = $(BOT_DIR)/bot
-JOGOUI_EXEC = $(JOGOUI_DIR)/jogoUI
-MOTOR_EXEC = $(MOTOR_DIR)/motor
+BOT_EXEC = $(SRC_DIR)/bot
+JOGOUI_EXEC = $(SRC_DIR)/jogoUI
+MOTOR_EXEC = $(SRC_DIR)/motor
 
 # Targets
 all: $(BOT_EXEC) $(JOGOUI_EXEC) $(MOTOR_EXEC)
 
-$(BOT_EXEC): $(BOT_DIR)/bot.c
-	$(CC) $(CFLAGS) $(LDLIBS) -o $(BOT_EXEC) $(BOT_DIR)/bot.c
+$(BOT_EXEC): $(SRC_DIR)/bot.c
+	$(CC) $(CFLAGS) $(LDLIBS) -o $(BOT_EXEC) $(SRC_DIR)/bot.c
 
-$(JOGOUI_EXEC): $(JOGOUI_DIR)/jogoUI.c $(JOGOUI_DIR)/helpersJogoUI.c $(JOGOUI_DIR)/helpersJogoUI.h
-	$(CC) $(CFLAGS) -o $(JOGOUI_EXEC) $(JOGOUI_DIR)/jogoUI.c $(JOGOUI_DIR)/helpersJogoUI.c $(LIBRARY_PATH) $(LDLIBS)
+$(JOGOUI_EXEC): $(SRC_DIR)/jogoUI.c $(SRC_DIR)/helpersJogoUI.c $(HEADERS_DIR)/helpersJogoUI.h
+	$(CC) $(CFLAGS) -o $(JOGOUI_EXEC) $(SRC_DIR)/jogoUI.c $(SRC_DIR)/helpersJogoUI.c $(LIBRARY_PATH) $(LDLIBS)
 
-
-$(MOTOR_EXEC): $(MOTOR_DIR)/motor.c $(MOTOR_DIR)/comandosMotor.c $(MOTOR_DIR)/comandosMotor.h $(MOTOR_DIR)/helpersMotor.c $(MOTOR_DIR)/helpersMotor.h
-	$(CC) $(CFLAGS) $(LDLIBS) -o $(MOTOR_EXEC) $(MOTOR_DIR)/motor.c $(MOTOR_DIR)/comandosMotor.c $(MOTOR_DIR)/helpersMotor.c
+$(MOTOR_EXEC): $(SRC_DIR)/motor.c $(SRC_DIR)/comandosMotor.c $(HEADERS_DIR)/comandosMotor.h $(SRC_DIR)/helpersMotor.c $(HEADERS_DIR)/helpersMotor.h
+	$(CC) $(CFLAGS) $(LDLIBS) -o $(MOTOR_EXEC) $(SRC_DIR)/motor.c $(SRC_DIR)/comandosMotor.c $(SRC_DIR)/helpersMotor.c
 
 clean:
 	rm -f $(BOT_EXEC) $(JOGOUI_EXEC) $(MOTOR_EXEC)
+

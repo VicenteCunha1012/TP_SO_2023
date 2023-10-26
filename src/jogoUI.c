@@ -1,12 +1,10 @@
-#include "helpersJogoUI.h"
+#include "./headers/helpersJogoUI.h"
 
 int main(int argc, char** argv) {
     if(argc != 2 || strlen(argv[1]) > 20) {
         fprintf(stderr, "Erro: Sintaxe Invalida. Por favor introduza o seu nome (MAX 20 caracteres)\nExemplo: ./jogoUI \"John Doe\"\n");
         exit(0);
     }
-
-    char *name = argv[1];
     
     Avatar myAvatar;
     strcpy(myAvatar.nome, argv[1]);
@@ -14,8 +12,8 @@ int main(int argc, char** argv) {
     myAvatar.x = 0;
     myAvatar.y = 0;
 	
-	mkfifo("/tmp/jogoUIFIFO", 0666);
-	int fd = open("~/Desktop/cenas/TP_SO_2023/testfifo", O_WRONLY);
+	mkfifo("jogoUIFIFO", 0666);
+	int fd = open("jogoUIFIFO", O_WRONLY);
 	write(fd, &myAvatar, sizeof(Avatar));
 	close(fd);
 	

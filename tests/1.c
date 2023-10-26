@@ -30,6 +30,12 @@ typedef struct {
     char icone;
 } Avatar;
 
+typedef struct {
+    Avatar avatar;
+    int PID;
+    
+}
+
 void posicionarAvatar(Avatar avatar, WINDOW* window) {
     mvwprintw(window, avatar.y, avatar.x, "%c", avatar.icone);
 }

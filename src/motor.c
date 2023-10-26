@@ -32,18 +32,17 @@ int main(int argc, char **argv) {
     Avatar users[MAX_USERS];
     int currentPlayers = 0;
     //Exemplo de como receber estrutura do jogoUI
-    
     int fd;
-    Avatar tempAvatar;
-    mkfifo("jogoUIFIFO", 0666);
-    fd = open("jogoUIFIFO", O_RDONLY);
-    read(fd, &tempAvatar, sizeof(Avatar));
-    close(fd);
-    printf("%s", tempAvatar.nome);
-    
-    while(currentPlayers < 4) {
-    	// Wait for new players
-    	// 
+    while(currentPlayers < 5) {			// TODO: ESTA A LER 2 VEZES SEGUIDAS POR ALGUMA RAZAO
+		Avatar tempAvatar;
+		mkfifo("jogoUIFIFO", 0666);
+		fd = open("jogoUIFIFO", O_RDONLY);
+		read(fd, &tempAvatar, sizeof(Avatar));
+		close(fd);
+		users[currentPlayers] = tempAvatar;
+		printf("%s", tempAvatar.pid);
+		fflush(stdout);
+		currentPlayers++;
     }
     
     

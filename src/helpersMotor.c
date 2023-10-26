@@ -9,3 +9,4 @@ void createMap(char* file, char mapBuffer[MAP_ROWS][MAP_COLUMNS]) {
         }
     } 
 }
+

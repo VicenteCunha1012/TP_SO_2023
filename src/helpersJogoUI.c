@@ -49,3 +49,4 @@ void getCommandLine(WINDOW *bottomWindow, char *command) {
     noecho();
     curs_set(0);
 }
+

@@ -4,11 +4,17 @@
 #include <ncurses.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <stdlib.h>
 #include <string.h>
+#include <signal.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <fcntl.h>
 
 #define STRING_SIZE 20
-#define TOP_SCREEN_HEIGTH 16
-#define TOP_SCREEN_WIDTH 40*2
+#define TOP_SCREEN_HEIGTH 18
+#define TOP_SCREEN_WIDTH 41*2
 #define BOTTOM_SCREEN_HEIGTH 10
 #define BOTTOM_SCREEN_WIDTH  30*2
 #define COMMAND_LINE_X 5
@@ -23,6 +29,7 @@ typedef struct {
     int x;
     int y;
     char icone;
+    pid_t pid;
 } Avatar;
 
 extern char avoydables[];

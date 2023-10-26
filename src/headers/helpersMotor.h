@@ -17,10 +17,10 @@
 
 
 typedef struct {
-    char name[20];
+    char nome[20];
     int x;
     int y;
-    int isPlaying;
+    char icone;
     pid_t pid;
 } Avatar;
 

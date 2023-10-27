@@ -1,0 +1,5 @@
+A SOLUCAO ESTA NESTES TRES FICHEIROS
+FR FR FR
+FR MM
+TOMAS FAZ A TUA MAGIA Q A MINHA JA ACABOU
+nota: se der o bug dos pipes ja estarem criados ou o .lock da para abrir no explorador de ficheiros ou no terminal e apagar

@@ -114,7 +114,7 @@ int main() {
             exit(EXIT_FAILURE);
         }
     }
-    printf("cheguei a antes dos signals");
+    printf("\ncheguei a antes dos signals\n");
     signal(SIGINT, sigint_handler);
     signal(SIGUSR1, sigusr1_handler);
 
@@ -124,6 +124,7 @@ int main() {
     } else {
         printf("Named pipe 'ui_to_engine' created successfully.\n");
         ui_to_engine_fd_global = open("ui_to_engine", O_RDONLY);
+        printf("\nafter ui to engine created\n");
 }
 
     if (mkfifo("engine_to_ui", 0666) == -1) {
@@ -135,8 +136,6 @@ int main() {
     }
 
     
-    printf("\ncheguei a antes dos opens dos pipes\n");
-    printf("\ncheguei a linha 114\n");
     pid_t pid = getpid();
     write(lockFile, &pid,sizeof(pid));
     printf("\nescrevi %d\n",pid);

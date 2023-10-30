@@ -28,6 +28,7 @@
 		-> Enviar estado ao motor (x, y, etc)
 		-> Motor envia estado aos players	
 */
+/*
 typedef struct {
     typedef struct {
         char nome[NAME_LENGTH];
@@ -47,7 +48,7 @@ typedef struct {
 }packet;
 
 
-
+*/
 
 
 
@@ -56,18 +57,22 @@ int main(int argc, char **argv) {
     Avatar users[MAX_USERS];
     int currentPlayers = 0;
     //Exemplo de como receber estrutura do jogoUI
+    
+    #if 1
     int fd;
-    while(currentPlayers < 5) {			// TODO: ESTA A LER 2 VEZES SEGUIDAS POR ALGUMA RAZAO
+
+    mkfifo("jogoUIFIFO", 0666);
+
+	while(currentPlayers < 5) {			// TODO: ESTA A LER 2 VEZES SEGUIDAS POR ALGUMA RAZAO
 		Avatar tempAvatar;
-		mkfifo("jogoUIFIFO", 0666);
 		fd = open("jogoUIFIFO", O_RDONLY);
-		read(fd, &tempAvatar, sizeof(Avatar));
-		close(fd);
-		users[currentPlayers] = tempAvatar;
-		printf("%s", tempAvatar.pid);
-		fflush(stdout);
+		int n = read(fd, &tempAvatar, sizeof(Avatar));
+		if(n == 0) continue;
 		currentPlayers++;
+		printf("%s\n%d\n", tempAvatar.nome, currentPlayers);
+		fflush(stdout);
     }
+    #endif
     
     
     //Exemplo de como receber dados do bot

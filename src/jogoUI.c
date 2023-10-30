@@ -1,4 +1,4 @@
-#include "./headers/helpersJogoUI.h"
+#include "./helpers/algoritmos.h"
 
 int main(int argc, char** argv) {
     if(argc != 2 || strlen(argv[1]) > 20) {
@@ -11,6 +11,7 @@ int main(int argc, char** argv) {
     myAvatar.icone = argv[1][0];
     myAvatar.x = 0;
     myAvatar.y = 0;
+    myAvatar.isPlaying = 0;
 	
 	mkfifo("jogoUIFIFO", 0666);
 	int fd = open("jogoUIFIFO", O_WRONLY);

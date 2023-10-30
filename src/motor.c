@@ -1,16 +1,8 @@
-#include "./headers/helpersMotor.h"
-#include "./headers/comandosMotor.h"
-#include <stdio.h>
+#include "./helpers/algoritmos.h"
 
-#define READ 0
-#define WRITE 1
-
-#define NAME_LENGTH 20
-#define HEADER_SIZE 3
-#define COMMAND_PACKET_SIZE 50
 
 /*
-	Precisa:
+	Precisa de:
 		-> Array dos jogadores
 		-> Estrutura dos jogadores: (nome, pos_ atual, pid, )
 		-> Estrutura packet com union 
@@ -50,6 +42,14 @@ typedef struct {
 
 */
 
+int newPlayerIsPlaying =1;
+
+void sigusr1_handler(int signum) {
+            printf("\nespetaram-me\n");
+            fflush(stdout);
+            newPlayerIsPlaying=0;
+        }
+
 
 
 int main(int argc, char **argv) {
@@ -58,21 +58,54 @@ int main(int argc, char **argv) {
     int currentPlayers = 0;
     //Exemplo de como receber estrutura do jogoUI
     
-    #if 1
     int fd;
 
     mkfifo("jogoUIFIFO", 0666);
 
-	while(currentPlayers < 5) {			// TODO: ESTA A LER 2 VEZES SEGUIDAS POR ALGUMA RAZAO
-		Avatar tempAvatar;
-		fd = open("jogoUIFIFO", O_RDONLY);
-		int n = read(fd, &tempAvatar, sizeof(Avatar));
-		if(n == 0) continue;
-		currentPlayers++;
-		printf("%s\n%d\n", tempAvatar.nome, currentPlayers);
-		fflush(stdout);
+
+	
+    
+
+    pid_t PID = fork();
+    if(PID==0) {
+                    signal(SIGUSR1,sigusr1_handler);
+
+        
+        
+        //puto
+        while(currentPlayers < 5) {			// TODO: ESTA A LER 2 VEZES SEGUIDAS POR ALGUMA RAZAO
+            Avatar tempAvatar;
+            fd = open("jogoUIFIFO", O_RDONLY);
+            int n = read(fd, &tempAvatar, sizeof(Avatar));
+            if(n == 0) continue;
+            if(checkAvatarExistingNome(tempAvatar.nome,users,currentPlayers)) {
+                //mandar mensagem de erro
+            }  else {
+            tempAvatar.isPlaying = newPlayerIsPlaying;
+            users[currentPlayers] = tempAvatar;
+            printf("\n%s,%d\n",tempAvatar.nome,tempAvatar.isPlaying);
+            fflush(stdout);
+            currentPlayers++;
+            }
+        }
+    } else {
+        char commandBuffer[COMMAND_BUFFERSIZE]="";
+
+        while(strcmp(commandBuffer,"exit")) {
+            
+            readCommand(commandBuffer,sizeof(commandBuffer));
+            if(!strcmp(commandBuffer,"begin")) {
+                printf("\nenviado\n");
+                fflush(stdout);
+                kill(PID, SIGUSR1);
+            }
+            handleCommand(commandBuffer);
+
+        }
+
     }
-    #endif
+
+    printf("\npassou\n");
     
     
     //Exemplo de como receber dados do bot

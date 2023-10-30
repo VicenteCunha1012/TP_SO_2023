@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "./helpers/algoritmos.h"
 
 // NAO MEXER NO BOT -> VAI SER DADO
 

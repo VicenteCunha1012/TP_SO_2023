@@ -17,7 +17,33 @@ int main(int argc, char** argv) {
 	int fd = open("jogoUIFIFO", O_WRONLY);
 	write(fd, &myAvatar, sizeof(Avatar));
 	close(fd);
-	
+    //agora podemos abrir um pipe com tipo engine+ o nome do player
+    //para lhe devolver informacao de se ta a jogar etc?
+    //ja para n flr de que ainda temos de implementar o p2p chat
+    //peer to peer tipo sem mexer c o motor
+    //podemos ter um 
+    //e que tal o jogoUI tmb ter um fork a receber a informacao do sjogadores e quando chegar a 4 acaba
+	//recebemos de volta o isPlaying talvez?
+    int responseFd = 0;
+    
+    responseFd = open("engineFIFO",O_RDONLY);
+    /*if(read(responseFd,&myAvatar.isPlaying, sizeof(myAvatar.isPlaying))==-1) {
+        //erro a receber isPlaying
+    }*/
+    char map[MAP_ROWS][MAP_COLUMNS];
+
+    if(read(responseFd,map,sizeof(map))==-1) {
+        printf("\nocorreu um erro a receber o mapa\n");
+    }
+
+    for(int i=0;i<MAP_ROWS;i++) {
+        for(int j=0;j<MAP_COLUMNS;j++) {
+            printf("%c",map[i][j]);
+        }
+        printf("\n");
+    }
+}
+    /*
     initScreen();
     
     WINDOW *topWindow = newwin(TOP_SCREEN_HEIGTH, TOP_SCREEN_WIDTH, 0, (COLS - TOP_SCREEN_WIDTH) / 2);
@@ -91,3 +117,4 @@ int main(int argc, char** argv) {
     return 0;    
 
 }
+*/

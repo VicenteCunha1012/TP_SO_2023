@@ -61,19 +61,29 @@ int main(int argc, char **argv) {
     int fd;
 
     mkfifo("jogoUIFIFO", 0666);
+    mkfifo("engineFIFO",066);
 
 
+    createMap("level.txt",mapBuffer);
+
+    for(int i=0;i<MAP_ROWS;i++) {
+        for(int j=0;j<MAP_COLUMNS;j++) {
+            printf("%c",mapBuffer[i][j]);
+        }
+        printf("\n");
+    }
+    
 	
     
 
     pid_t PID = fork();
     if(PID==0) {
-                    signal(SIGUSR1,sigusr1_handler);
+        signal(SIGUSR1,sigusr1_handler);
 
         
         
         //puto
-        while(currentPlayers < 5) {			// TODO: ESTA A LER 2 VEZES SEGUIDAS POR ALGUMA RAZAO
+        while(currentPlayers < 1) {			// TODO: ESTA A LER 2 VEZES SEGUIDAS POR ALGUMA RAZAO
             Avatar tempAvatar;
             fd = open("jogoUIFIFO", O_RDONLY);
             int n = read(fd, &tempAvatar, sizeof(Avatar));
@@ -83,11 +93,15 @@ int main(int argc, char **argv) {
             }  else {
             tempAvatar.isPlaying = newPlayerIsPlaying;
             users[currentPlayers] = tempAvatar;
-            printf("\n%s,%d\n",tempAvatar.nome,tempAvatar.isPlaying);
-            fflush(stdout);
+            //printf("\n%s,%d\n",tempAvatar.nome,tempAvatar.isPlaying);
+            //fflush(stdout);
             currentPlayers++;
+            
+
             }
         }
+        close(fd);
+        
     } else {
         char commandBuffer[COMMAND_BUFFERSIZE]="";
 
@@ -103,6 +117,12 @@ int main(int argc, char **argv) {
 
         }
 
+    }
+    int fd2 = open("engineFIFO",O_WRONLY);
+
+    
+    if(write(fd2, &mapBuffer, sizeof(mapBuffer)) == -1 ) {
+        printf("Erro a enviar mapa\n");
     }
 
     printf("\npassou\n");

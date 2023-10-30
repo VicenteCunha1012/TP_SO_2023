@@ -34,7 +34,7 @@ int main(int argc, char** argv) {
 
    char receivedData[MAP_ROWS * (MAP_COLUMNS)];  // Replace with the actual size you expect
     ssize_t bytes_read = read(responseFd, receivedData, sizeof(receivedData));
-
+    
     if (bytes_read == -1) {
         perror("Error reading from named pipe");
     } else {
@@ -52,7 +52,7 @@ int main(int argc, char** argv) {
         }
     }
     for(int i=0;i<MAP_ROWS;i++) {
-        for(int j=0;i<(MAP_COLUMNS);j++) {
+        for(int j=0;j<(MAP_COLUMNS);j++) {
             printf("%c",map[i][j]);
         }
     }

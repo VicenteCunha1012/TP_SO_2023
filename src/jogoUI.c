@@ -30,18 +30,33 @@ int main(int argc, char** argv) {
     /*if(read(responseFd,&myAvatar.isPlaying, sizeof(myAvatar.isPlaying))==-1) {
         //erro a receber isPlaying
     }*/
-    char map[MAP_ROWS][MAP_COLUMNS];
+    char map[MAP_ROWS][(MAP_COLUMNS)];
 
-    if(read(responseFd,map,sizeof(map))==-1) {
-        printf("\nocorreu um erro a receber o mapa\n");
+   char receivedData[MAP_ROWS * (MAP_COLUMNS)];  // Replace with the actual size you expect
+    ssize_t bytes_read = read(responseFd, receivedData, sizeof(receivedData));
+
+    if (bytes_read == -1) {
+        perror("Error reading from named pipe");
+    } else {
+        if (bytes_read != sizeof(receivedData)) {
+            fprintf(stderr, "Incomplete data received\n");
+        } else {
+            // Reconstruct the 2D array
+            for (int i = 0; i < MAP_ROWS; i++) {
+                for (int j = 0; j < (MAP_COLUMNS); j++) {
+                    map[i][j] = receivedData[i * (MAP_COLUMNS) + j];
+                }
+            }
+
+            // Now mapBuffer contains the reconstructed 2D array
+        }
     }
-
     for(int i=0;i<MAP_ROWS;i++) {
-        for(int j=0;j<MAP_COLUMNS;j++) {
+        for(int j=0;i<(MAP_COLUMNS);j++) {
             printf("%c",map[i][j]);
         }
-        printf("\n");
     }
+
 }
     /*
     initScreen();

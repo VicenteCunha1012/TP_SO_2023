@@ -68,7 +68,10 @@ void createMap(char* file, char mapBuffer[MAP_ROWS][MAP_COLUMNS]) {
         for(int j = 0; j < MAP_COLUMNS; ++j) {
             read(fd, &mapBuffer[i][j], sizeof(char));
         }
+        
     } 
+    
+    
 }
 
 Command commands[] = {

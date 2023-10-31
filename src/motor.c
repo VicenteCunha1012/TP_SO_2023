@@ -14,7 +14,7 @@
 		-> jogoUI manda um sinal para o pid recebido
 		-> o pid recebido prepara-se para receber mensagem
 		-> jogoUI envia mensagem
-		
+	
 		
 	Update dos players:
 		-> Apos avaliacao das teclas
@@ -100,8 +100,8 @@ int main(int argc, char **argv) {
     mkfifo("jogoUIFIFO", 0666);
     mkfifo("engineFIFO", 0666);
 
-    createMap("level.txt",mapBuffer);
-
+    createMap("level.txt",mapBuffer);  
+    
     pid_t PID = fork();
     if(PID==0) {
         while(currentPlayers < MAX_USERS) {			// TODO: ESTA A LER 2 VEZES SEGUIDAS POR ALGUMA RAZAO

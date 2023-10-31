@@ -44,7 +44,7 @@ typedef struct {
 
 int newPlayerIsPlaying =1;
 
-void sigusr1_handler(int signum) {
+void sigalarm_handler(int signum) {
             printf("\nespetaram-me\n");
             fflush(stdout);
             newPlayerIsPlaying=0;
@@ -73,7 +73,7 @@ int main(int argc, char **argv) {
 
     pid_t PID = fork();
     if(PID==0) {
-        signal(SIGUSR1,sigusr1_handler);
+        signal(SIGALRM,sigalarm_handler);
 
         
         
@@ -116,6 +116,7 @@ int main(int argc, char **argv) {
         close(fd);
         
     } else {
+        alarm(5);
         char commandBuffer[COMMAND_BUFFERSIZE]="";
 
         while(strcmp(commandBuffer,"exit")) {
@@ -124,7 +125,7 @@ int main(int argc, char **argv) {
             if(!strcmp(commandBuffer,"begin")) {
                 printf("\nenviado\n");
                 fflush(stdout);
-                kill(PID, SIGUSR1);
+                kill(PID, SIGALRM);
             }
             handleCommand(commandBuffer);
 

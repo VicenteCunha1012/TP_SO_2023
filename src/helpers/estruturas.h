@@ -6,14 +6,25 @@
 typedef void (*CommandFunc)(char* args);
 
 typedef struct {
-    char nome[20];
-    int x;
-    int y;
+    char nome[USER_NAME_SIZE];
     char icone;
+    char state;
+    char cor;
+    int x, y;
     pid_t pid;
     int isPlaying;
+
 } Avatar;
 
+typedef struct {
+    char nome[USER_NAME_SIZE];
+    pid_t pid;
+} PlayerID;
+
+typedef struct {
+    char mapa[MAP_ROWS*MAP_COLUMNS];
+    PlayerID PlayersID[MAX_USERS];
+} InitPayload;
 
 typedef struct {
     char* commandName;

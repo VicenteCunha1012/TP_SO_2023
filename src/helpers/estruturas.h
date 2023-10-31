@@ -21,7 +21,7 @@ typedef struct {
 } PlayerID;
 
 typedef struct {
-    char mapa[MAP_ROWS*MAP_COLUMNS];
+    char mapa[MAP_ROWS][MAP_COLUMNS];
     PlayerID PlayersID[MAX_USERS];
 } InitPayload;
 

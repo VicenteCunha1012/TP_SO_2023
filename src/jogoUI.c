@@ -19,52 +19,40 @@ int main(int argc, char** argv) {
 	int fd = open("jogoUIFIFO", O_WRONLY);
 	write(fd, &myAvatar, sizeof(Avatar));
 	close(fd);
-    //agora podemos abrir um pipe com tipo engine+ o nome do player
-    //para lhe devolver informacao de se ta a jogar etc?
-    //ja para n flr de que ainda temos de implementar o p2p chat
-    //peer to peer tipo sem mexer c o motor
-    //podemos ter um 
-    //e que tal o jogoUI tmb ter um fork a receber a informacao do sjogadores e quando chegar a 4 acaba
-	//recebemos de volta o isPlaying talvez?
+    
     int responseFd = 0;
     
     responseFd = open("engineFIFO",O_RDONLY);
     /*if(read(responseFd,&myAvatar.isPlaying, sizeof(myAvatar.isPlaying))==-1) {
         //erro a receber isPlaying
     }*/
-    if(read(responseFd,myAvatar.isPlaying, sizeof(myAvatar.isPlaying))==-1) {
-        printf("Nao sei o que fazer, serei jogador ou espectador?\n");
-    }
-
-
-    char map[MAP_ROWS][(MAP_COLUMNS)];
-    char tempMap[MAP_ROWS][MAP_COLUMNS];
-
-   char receivedData[MAP_ROWS * (MAP_COLUMNS)];  // Replace with the actual size you expect
-    ssize_t bytes_read = read(responseFd, receivedData, sizeof(receivedData));
+    InitPayload receivedPayload;
+    char flattenedMap[MAP_ROWS * MAP_COLUMNS];
+    int bytes_read;
+    bytes_read = read(responseFd, &receivedPayload, sizeof(receivedPayload));
+    printf("\n%d\n",bytes_read);
+    char map[MAP_ROWS][MAP_COLUMNS];
     
     if (bytes_read == -1) {
         perror("Error reading from named pipe");
     } else {
-        if (bytes_read != sizeof(receivedData)) {
-            fprintf(stderr, "Incomplete data received\n");
-        } else {
-            // Reconstruct the 2D array
-            for (int i = 0; i < MAP_ROWS; i++) {
-                for (int j = 0; j < (MAP_COLUMNS); j++) {
-                    map[i][j] = receivedData[i * (MAP_COLUMNS) + j];
-                }
+        strcpy(map,receivedPayload.mapa);
+        // Reconstruct the 2D array
+        /*for (int i = 0; i < MAP_ROWS; i++) {
+            for (int j = 0; j < (MAP_COLUMNS); j++) {
+                map[i][j] = receivedPayload.mapa[i * (MAP_COLUMNS) + j];
             }
+        }
 
             // Now mapBuffer contains the reconstructed 2D array
-        }
+        }*/
     }
     map[MAP_ROWS][MAP_COLUMNS] = '\0';
     puts(map);
     
+}
 
-
-    
+    /*
     initScreen();
     
     WINDOW *topWindow = newwin(TOP_SCREEN_HEIGTH, TOP_SCREEN_WIDTH, 0, (COLS - TOP_SCREEN_WIDTH) / 2);
@@ -152,3 +140,4 @@ int main(int argc, char** argv) {
     return 0;    
 
 }
+*/

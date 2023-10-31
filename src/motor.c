@@ -84,9 +84,31 @@ int main(int argc, char **argv) {
             }
             
         }
-        for(int i = 0;i<MAX_USERS;i++) {
-            printf("%s, %c, %c, %c, %d, %d, %d\n",users[i].nome,users[i].icone, users[i].state, users[i].cor, users[i].x, users[i].y, users[i].pid);
+        
+
+        InitPayload toSend;
+        for(int i=0;i<MAX_USERS;i++) {
+            strcpy(toSend.PlayersID[i].nome, users[i].nome);
+            toSend.PlayersID[i].pid = users[i].pid;
         }
+        char mapa[MAP_ROWS * MAP_COLUMNS];
+        //flattenMap(mapBuffer,mapa );
+        strcpy(toSend.mapa, mapBuffer);
+        int fdtantos = open("engineFIFO", O_WRONLY);
+        for(int i=0;i<MAX_USERS;i++) {
+
+        write(fdtantos, &toSend, sizeof(toSend));
+        }
+
+        int fdEngine[MAX_USERS];
+        for(int i=0;i< MAX_USERS;i++) {
+            char tempBuffer[50];
+            sprintf(tempBuffer, "%s%d",toSend.PlayersID[i].nome, toSend.PlayersID[i].pid);
+            mkfifo(tempBuffer, 0666);
+            fdEngine[i]=open(tempBuffer, O_WRONLY);
+            if(fdEngine[i]==-1) {printf("Erro no canudo");}
+        }
+
         
 
         close(fd);

@@ -30,6 +30,11 @@ int main(int argc, char** argv) {
     /*if(read(responseFd,&myAvatar.isPlaying, sizeof(myAvatar.isPlaying))==-1) {
         //erro a receber isPlaying
     }*/
+    if(read(responseFd,myAvatar.isPlaying, sizeof(myAvatar.isPlaying))==-1) {
+        printf("Nao sei o que fazer, serei jogador ou espectador?\n");
+    }
+
+
     char map[MAP_ROWS][(MAP_COLUMNS)];
     char tempMap[MAP_ROWS][MAP_COLUMNS];
 
@@ -77,8 +82,12 @@ int main(int argc, char** argv) {
             }
         }
     }
-
-    mvprintw(topWindow, 3,3, "%s","sei la");
+    if(myAvatar.isPlaying==1) {
+        mvprintw(bottomWindow, 1, 1,"%s","Sou jogador.");
+    } else {
+        mvprintw(bottomWindow, 1, 1,"%s","Sou espectador.");
+    }
+     
     wrefresh(topWindow);
     wrefresh(bottomWindow);
 

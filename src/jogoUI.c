@@ -30,7 +30,6 @@ int main(int argc, char** argv) {
     char flattenedMap[MAP_ROWS * MAP_COLUMNS];
     int bytes_read;
     bytes_read = read(responseFd, &receivedPayload, sizeof(receivedPayload));
-    printf("\n%d\n",bytes_read);
     char map[MAP_ROWS][MAP_COLUMNS];
     
     if (bytes_read == -1) {
@@ -49,10 +48,18 @@ int main(int argc, char** argv) {
     }
     map[MAP_ROWS][MAP_COLUMNS] = '\0';
     puts(map);
+    int meuNum=0;
+    for(int i=0;i<MAX_USERS;i++) {
+        //printf("%s,%d\n",receivedPayload.PlayersID[i].nome, receivedPayload.PlayersID[i].pid);
+        if(!strcmp(receivedPayload.PlayersID[i].nome,argv[1])) {
+            meuNum = i+1;
+        }
+    }
+    //printf("\neu sou o %s", receivedPayload.PlayersID[meuNum-1].nome);
     
-}
 
-    /*
+
+    
     initScreen();
     
     WINDOW *topWindow = newwin(TOP_SCREEN_HEIGTH, TOP_SCREEN_WIDTH, 0, (COLS - TOP_SCREEN_WIDTH) / 2);
@@ -64,14 +71,15 @@ int main(int argc, char** argv) {
     
     ungetch('.');
     getch();    
-    for (int i = 0; i < MAP_ROWS; i++) {
+    /*for (int i = 0; i < MAP_ROWS; i++) {
         for (int j = 0; j < MAP_COLUMNS; j++) {
-            if(map[i][j]!='\n') {
+            if(receivedPayload.mapa[i][j]!='\n') {
 
-            mvwprintw(topWindow, i+1, j+1, "%c", map[i][j]);
+            mvwprintw(topWindow, i+1, j+1, "%c", receivedPayload.mapa[i][j]);
             }
         }
-    }
+    }*/
+    
     if(myAvatar.isPlaying==1) {
         mvprintw(bottomWindow, 1, 1,"%s","Sou jogador.");
     } else {
@@ -140,4 +148,3 @@ int main(int argc, char** argv) {
     return 0;    
 
 }
-*/

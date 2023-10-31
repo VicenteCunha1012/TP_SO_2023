@@ -107,16 +107,13 @@ int main(int argc, char **argv) {
         while(currentPlayers < MAX_USERS) {			// TODO: ESTA A LER 2 VEZES SEGUIDAS POR ALGUMA RAZAO
             fd = open("jogoUIFIFO", O_RDONLY);
             Avatar tempAvatar;
-            printf("\nmesmo antes do ler %d\n", currentPlayers);
             int nBytes = read(fd, &tempAvatar, sizeof(Avatar));
             if(nBytes == 0) continue;
             if(!checkAvatarExistingNome(tempAvatar.nome,users,currentPlayers)) {
-                printf("Nao existe\n");
+                printf("Nao existe, a criar\n");
                 tempAvatar.isPlaying = 1; //n e preciso o outro
                 users[currentPlayers] = tempAvatar;
                 currentPlayers++;
-                printf("%d\n", currentPlayers);
-                fflush(stdout);
             } else {
                 printf("\nerro ja existe com este nome :)\n");
             }

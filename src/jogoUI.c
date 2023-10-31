@@ -53,6 +53,7 @@ int main(int argc, char** argv) {
         }
     }
     map[MAP_ROWS][MAP_COLUMNS] = '\0';
+    puts(map);
     
 
 
@@ -65,14 +66,22 @@ int main(int argc, char** argv) {
 
     drawBorder(topWindow, bottomWindow);
     
-    mvwprintw(topWindow, 2, 1, "%c", map[3][3]);
     
     ungetch('.');
     getch();    
-    placeAvatar(myAvatar, topWindow);
-    
+    for (int i = 0; i < MAP_ROWS; i++) {
+        for (int j = 0; j < MAP_COLUMNS; j++) {
+            if(map[i][j]!='\n') {
+
+            mvwprintw(topWindow, i+1, j+1, "%c", map[i][j]);
+            }
+        }
+    }
+
+    mvprintw(topWindow, 3,3, "%s","sei la");
     wrefresh(topWindow);
     wrefresh(bottomWindow);
+
 
     int key;
     char command[STRING_SIZE];

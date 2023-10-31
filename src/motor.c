@@ -1,4 +1,5 @@
 #include "./helpers/algoritmos.h"
+#include <errno.h>
 
 
 /*
@@ -42,6 +43,20 @@ typedef struct {
 
 */
 
+const char *lockFilename = ".lock";
+int lockFile;
+const char* killMessages[] = {
+    "Abortaram-me :(",
+    "Bateram-me as botas :(",
+    "Esticaram-me o pernil :(",
+    "Fiquei a servir de carpete :(",
+    "Auch :(",
+    "Espalmaram-me :(",
+    "O Terminator apanhou-me :(",
+    "Mataram-me :(",
+};
+
+
 int newPlayerIsPlaying =1;
 
 void sigalarm_handler(int signum) {
@@ -51,8 +66,31 @@ void sigalarm_handler(int signum) {
         }
 
 
+void sigint_handler(int signum) {
+    srand(time(NULL));
+    
+    int random = (rand() % 8) ;
+    printf("\n%s\n",killMessages[random]);
+    // Add cleanup code here if needed
+    close(lockFile);
+    unlink(lockFilename);
+    exit(0);
+}
 
 int main(int argc, char **argv) {
+    lockFile = open(lockFilename, O_WRONLY | O_CREAT | O_EXCL, 0666);
+    if(lockFile == -1) {
+        if(errno==EEXIST) {
+            printf("Apenas pode correr uma instancia deste programa de cada vez\n");
+            exit(EXIT_FAILURE);
+        } else {
+            perror("open");
+            exit(EXIT_FAILURE);
+        }
+    }
+    signal(SIGINT, sigint_handler);
+
+
     char mapBuffer[MAP_ROWS][MAP_COLUMNS];
     Avatar users[MAX_USERS];
     int currentPlayers = 0;
@@ -66,7 +104,7 @@ int main(int argc, char **argv) {
 
     pid_t PID = fork();
     if(PID==0) {
-        while(currentPlayers < 5) {			// TODO: ESTA A LER 2 VEZES SEGUIDAS POR ALGUMA RAZAO
+        while(currentPlayers < MAX_USERS) {			// TODO: ESTA A LER 2 VEZES SEGUIDAS POR ALGUMA RAZAO
             fd = open("jogoUIFIFO", O_RDONLY);
             Avatar tempAvatar;
             printf("\nmesmo antes do ler %d\n", currentPlayers);
@@ -113,7 +151,7 @@ int main(int argc, char **argv) {
 
         close(fd);
         
-    } else {
+    } else { //pai
         char commandBuffer[COMMAND_BUFFERSIZE]="";
 
         while(strcmp(commandBuffer,"exit")) {

@@ -17,7 +17,7 @@ extern char avoydables[];
 
 typedef void (*CommandFunc)(char* args);
 
-
+void flattenMap(char mapToFlatten[MAP_ROWS][MAP_COLUMNS],char flatMap[]);
 extern Command commands[]; // Command Lookup Table
 
 // Commands

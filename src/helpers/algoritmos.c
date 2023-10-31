@@ -12,6 +12,14 @@ int checkAvatarExistingNome(char nome[],Avatar array[], int tamanho) {
 
 char avoydables[4] = "x|-";
 
+void flattenMap(char mapToFlatten[MAP_ROWS][MAP_COLUMNS],char flatMap[]) {
+    for (int i = 0; i < MAP_ROWS; i++) {
+        for (int j = 0; j < MAP_COLUMNS; j++) {
+            flatMap[i * MAP_COLUMNS + j] = mapToFlatten[i][j];
+            }
+        }
+        flatMap[MAP_ROWS*(MAP_COLUMNS)] = '\0';
+}
 
 void writeWindowLabel(char string[], int size, WINDOW* window) {
     for(int i = 0; i < size; ++i) {

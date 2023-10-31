@@ -12,7 +12,9 @@ int main(int argc, char** argv) {
     myAvatar.x = 0;
     myAvatar.y = 0;
     myAvatar.isPlaying = 0;
-	
+    myAvatar.state = 'x';
+    myAvatar.cor = 'x';
+	myAvatar.pid = getpid();
 	mkfifo("jogoUIFIFO", 0666);
 	int fd = open("jogoUIFIFO", O_WRONLY);
 	write(fd, &myAvatar, sizeof(Avatar));

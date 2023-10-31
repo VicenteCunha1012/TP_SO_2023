@@ -122,12 +122,13 @@ int main(int argc, char **argv) {
         }
     }
     flatMap[MAP_ROWS*(MAP_COLUMNS)] = '\0';
+    
     if(write(fd2,flatMap,sizeof(char)*MAP_ROWS*MAP_COLUMNS+1)==-1) {
         printf("\nocorreu um erro\n");
     }
-    printf("supostamente mandou%s",flatMap);
+    printf("supostamente mandou\n");
     
-    
+
     
     
     //Exemplo de como receber dados do bot

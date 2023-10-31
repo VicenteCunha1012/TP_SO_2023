@@ -31,6 +31,7 @@ int main(int argc, char** argv) {
         //erro a receber isPlaying
     }*/
     char map[MAP_ROWS][(MAP_COLUMNS)];
+    char tempMap[MAP_ROWS][MAP_COLUMNS];
 
    char receivedData[MAP_ROWS * (MAP_COLUMNS)];  // Replace with the actual size you expect
     ssize_t bytes_read = read(responseFd, receivedData, sizeof(receivedData));
@@ -51,14 +52,11 @@ int main(int argc, char** argv) {
             // Now mapBuffer contains the reconstructed 2D array
         }
     }
-    for(int i=0;i<MAP_ROWS;i++) {
-        for(int j=0;j<(MAP_COLUMNS);j++) {
-            printf("%c",map[i][j]);
-        }
-    }
+    map[MAP_ROWS][MAP_COLUMNS] = '\0';
+    
 
-}
-    /*
+
+    
     initScreen();
     
     WINDOW *topWindow = newwin(TOP_SCREEN_HEIGTH, TOP_SCREEN_WIDTH, 0, (COLS - TOP_SCREEN_WIDTH) / 2);
@@ -66,11 +64,13 @@ int main(int argc, char** argv) {
     WINDOW *windows[N_WINDOWS] = {topWindow, bottomWindow};
 
     drawBorder(topWindow, bottomWindow);
-    mvwprintw(topWindow, 2, 2, "%c", 'x');
+    
+    mvwprintw(topWindow, 2, 1, "%c", map[3][3]);
     
     ungetch('.');
     getch();    
     placeAvatar(myAvatar, topWindow);
+    
     wrefresh(topWindow);
     wrefresh(bottomWindow);
 
@@ -132,4 +132,3 @@ int main(int argc, char** argv) {
     return 0;    
 
 }
-*/

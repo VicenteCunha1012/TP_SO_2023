@@ -57,35 +57,23 @@ int main(int argc, char **argv) {
     Avatar users[MAX_USERS];
     int currentPlayers = 0;
     //Exemplo de como receber estrutura do jogoUI
-    
     int fd;
 
     mkfifo("jogoUIFIFO", 0666);
     mkfifo("engineFIFO", 0666);
 
-
     createMap("level.txt",mapBuffer);
-
-    
-    
-	
-    
 
     pid_t PID = fork();
     if(PID==0) {
-        signal(SIGALRM,sigalarm_handler);
-
-        
-        
-        //puto
         while(currentPlayers < 5) {			// TODO: ESTA A LER 2 VEZES SEGUIDAS POR ALGUMA RAZAO
             Avatar tempAvatar;
             fd = open("jogoUIFIFO", O_RDONLY);
-            int n = read(fd, &tempAvatar, sizeof(Avatar));
-            if(n == 0) continue;
+            int nBytes = read(fd, &tempAvatar, sizeof(Avatar));
+            if(nBytes == 0) continue;
             if(checkAvatarExistingNome(tempAvatar.nome,users,currentPlayers)) {
                 //mandar mensagem de erro
-            }  else {
+            } else {
             tempAvatar.isPlaying = newPlayerIsPlaying;
             users[currentPlayers] = tempAvatar;
             //printf("\n%s,%d\n",tempAvatar.nome,tempAvatar.isPlaying);

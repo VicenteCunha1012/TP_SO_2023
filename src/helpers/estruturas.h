@@ -13,7 +13,6 @@ typedef struct {
     int x, y;
     pid_t pid;
     int isPlaying;
-
 } Avatar;
 
 typedef struct {

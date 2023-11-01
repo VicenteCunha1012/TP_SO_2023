@@ -58,8 +58,8 @@ int main(int argc, char** argv) {
     //printf("\neu sou o %s", receivedPayload.PlayersID[meuNum-1].nome);
     
 
-
-    
+}
+/*    
     initScreen();
     
     WINDOW *topWindow = newwin(TOP_SCREEN_HEIGTH, TOP_SCREEN_WIDTH, 0, (COLS - TOP_SCREEN_WIDTH) / 2);
@@ -71,14 +71,6 @@ int main(int argc, char** argv) {
     
     ungetch('.');
     getch();    
-    /*for (int i = 0; i < MAP_ROWS; i++) {
-        for (int j = 0; j < MAP_COLUMNS; j++) {
-            if(receivedPayload.mapa[i][j]!='\n') {
-
-            mvwprintw(topWindow, i+1, j+1, "%c", receivedPayload.mapa[i][j]);
-            }
-        }
-    }*/
     
     if(myAvatar.isPlaying==1) {
         mvprintw(bottomWindow, 1, 1,"%s","Sou jogador.");
@@ -148,3 +140,4 @@ int main(int argc, char** argv) {
     return 0;    
 
 }
+*/

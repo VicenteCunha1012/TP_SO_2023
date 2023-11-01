@@ -119,7 +119,7 @@ int main(int argc, char **argv) {
                 users[currentPlayers] = tempAvatar;
                 currentPlayers++;
             
-        }
+        }printf("sai do primeiro while\n");
 
         for(int i=0;i<MAX_USERS;i++) {
             do {
@@ -144,10 +144,10 @@ int main(int argc, char **argv) {
         //flattenMap(mapBuffer,mapa );
         strcpy(toSend.mapa, mapBuffer);
         int fdtantos = open("engineFIFO", O_WRONLY);
-        printf("147");
+        
         for(int i=0;i<MAX_USERS;i++) {
 
-        //write(fdtantos, &toSend, sizeof(toSend));
+        write(fdtantos, &toSend, sizeof(toSend));
         }
 
         int fdEngine[MAX_USERS];

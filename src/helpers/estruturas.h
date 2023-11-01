@@ -22,7 +22,7 @@ typedef struct {
 
 typedef struct {
     char mapa[MAP_ROWS][MAP_COLUMNS];
-    PlayerID PlayersID[MAX_USERS];
+    Avatar PlayersID[MAX_USERS];
 } InitPayload;
 
 typedef struct {

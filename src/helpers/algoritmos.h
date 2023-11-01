@@ -3,6 +3,9 @@
 
 #include "estruturas.h"
 
+int handleXAndY(char escolha);
+
+int charInStr(char caracter, char string[], int tamanho);
 
 int checkAvatarExistingNome(char nome[],Avatar array[], int tamanho);
 

@@ -10,6 +10,29 @@ int checkAvatarExistingNome(char nome[],Avatar array[], int tamanho) {
     return 0;
 }
 
+int charInStr(char caracter, char string[],int tamanho) {
+    for(int i=0;i<AVOYDABLES_SIZE && string[i]!='\0';i++) {
+        if(caracter==string[i]) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+int handleXAndY(char escolha) {
+    switch(escolha) {
+        case 'x':
+            return rand() % MAP_ROWS;
+            break;
+        case 'y':
+            return rand() % MAP_COLUMNS / 2; //porque vai andar de 2 em 2 e o mapa e de 16x40
+            break;
+        default: 
+            return 0;
+            break;    
+    }
+}
+
 char avoydables[4] = "x|-";
 
 void flattenMap(char mapToFlatten[MAP_ROWS][MAP_COLUMNS],char flatMap[]) {

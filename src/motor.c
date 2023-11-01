@@ -112,27 +112,42 @@ int main(int argc, char **argv) {
             if(!checkAvatarExistingNome(tempAvatar.nome,users,currentPlayers)) {
                 printf("Nao existe, a criar\n");
                 tempAvatar.isPlaying = 1; //n e preciso o outro
-                users[currentPlayers] = tempAvatar;
-                currentPlayers++;
             } else {
                 printf("\nerro ja existe com este nome :)\n");
+                tempAvatar.isPlaying = 0;
             }
+                users[currentPlayers] = tempAvatar;
+                currentPlayers++;
             
         }
-        
 
+        for(int i=0;i<MAX_USERS;i++) {
+            do {
+                
+                users[i].x = handleXAndY('x');
+                users[i].y = handleXAndY('y');
+            }while(charInStr(mapBuffer[users[i].x,users[i].y*2], avoydables, AVOYDABLES_SIZE));
+        }
+        
         InitPayload toSend;
         for(int i=0;i<MAX_USERS;i++) {
             strcpy(toSend.PlayersID[i].nome, users[i].nome);
+            toSend.PlayersID[i].icone = users[i].icone;
+            toSend.PlayersID[i].state = users[i].state;
+            toSend.PlayersID[i].cor = users[i].cor;
+            toSend.PlayersID[i].x = users[i].x;
+            toSend.PlayersID[i].y = users[i].y;
             toSend.PlayersID[i].pid = users[i].pid;
+            toSend.PlayersID[i].pid = users[i].isPlaying;
         }
         char mapa[MAP_ROWS * MAP_COLUMNS];
         //flattenMap(mapBuffer,mapa );
         strcpy(toSend.mapa, mapBuffer);
         int fdtantos = open("engineFIFO", O_WRONLY);
+        printf("147");
         for(int i=0;i<MAX_USERS;i++) {
 
-        write(fdtantos, &toSend, sizeof(toSend));
+        //write(fdtantos, &toSend, sizeof(toSend));
         }
 
         int fdEngine[MAX_USERS];
@@ -142,7 +157,9 @@ int main(int argc, char **argv) {
             mkfifo(tempBuffer, 0666);
             fdEngine[i]=open(tempBuffer, O_WRONLY);
             if(fdEngine[i]==-1) {printf("Erro no canudo");}
+            
         }
+        printf("162");
 
         
 

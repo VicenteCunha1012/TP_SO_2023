@@ -6,60 +6,46 @@ int main(int argc, char** argv) {
         exit(0);
     }
     
+    //
+    
     Avatar myAvatar;
-    strcpy(myAvatar.nome, argv[1]);
-    myAvatar.icone = argv[1][0];
-    myAvatar.x = 0;
-    myAvatar.y = 0;
-    myAvatar.isPlaying = 0;
-    myAvatar.state = ' ';
-    myAvatar.cor = ' ';
-	myAvatar.pid = getpid();
-	mkfifo("jogoUIFIFO", 0666);
-	int fd = open("jogoUIFIFO", O_WRONLY);
-	write(fd, &myAvatar, sizeof(Avatar));
-	close(fd);
+    initAvatar(&myAvatar, argv[1]);
     
-    int responseFd = 0;
+    //
     
-    responseFd = open("engineFIFO",O_RDONLY);
-    /*if(read(responseFd,&myAvatar.isPlaying, sizeof(myAvatar.isPlaying))==-1) {
-        //erro a receber isPlaying
-    }*/
-    InitPayload receivedPayload;
-    char flattenedMap[MAP_ROWS * MAP_COLUMNS];
-    int bytes_read;
-    bytes_read = read(responseFd, &receivedPayload, sizeof(receivedPayload));
-    char map[MAP_ROWS][MAP_COLUMNS];
+	int sendAvatarFd = open("jogoUIFIFO", O_WRONLY);
+	if(write(sendAvatarFd, &myAvatar, sizeof(Avatar)) == -1) {
+		perror("Erro a enviar Avatar ao motor");
+		exit(EXIT_FAILURE);
+	}
+	close(sendAvatarFd);
+	
+    //
     
-    if (bytes_read == -1) {
-        perror("Error reading from named pipe");
-    } else {
-        strcpy(map,receivedPayload.mapa);
-        // Reconstruct the 2D array
-        /*for (int i = 0; i < MAP_ROWS; i++) {
-            for (int j = 0; j < (MAP_COLUMNS); j++) {
-                map[i][j] = receivedPayload.mapa[i * (MAP_COLUMNS) + j];
-            }
-        }
-
-            // Now mapBuffer contains the reconstructed 2D array
-        }*/
+    InitPayload payload;
+    int receivePayloadFd = open("engineFIFO",O_RDONLY);
+    if(read(receivePayloadFd, &payload, sizeof(payload)) == -1) {
+    	perror("Erro a receber Payload do motor");
     }
-    map[MAP_ROWS][MAP_COLUMNS] = '\0';
-    puts(map);
-    int meuNum=0;
+    close(receivePayloadFd);
+    
+    //
+    
+    puts(payload.mapa);
+    
+    //
+    
+    //int meuNum=0;
     for(int i=0;i<MAX_USERS;i++) {
-        //printf("%s,%d\n",receivedPayload.PlayersID[i].nome, receivedPayload.PlayersID[i].pid);
-        if(!strcmp(receivedPayload.PlayersID[i].nome,argv[1])) {
+        printf("%s,%d\n",payload.PlayersID[i].nome, payload.PlayersID[i].pid);
+        /*
+        if(!strcmp(payload.PlayersID[i].nome,argv[1])) {
             meuNum = i+1;
         }
+        */
     }
-    //printf("\neu sou o %s", receivedPayload.PlayersID[meuNum-1].nome);
     
-
-}
-/*    
+/*
     initScreen();
     
     WINDOW *topWindow = newwin(TOP_SCREEN_HEIGTH, TOP_SCREEN_WIDTH, 0, (COLS - TOP_SCREEN_WIDTH) / 2);
@@ -127,7 +113,9 @@ int main(int argc, char** argv) {
             mvwprintw(bottomWindow, BOTTOM_SCREEN_HEIGTH - 3, 1, "[%s]: %s", myAvatar.nome, command);
             break;
         }
- 
+ 		
+ 		// TODO ENVIAR AVATAR AO MOTOR
+ 		
         refreshAll(windows);
     }
 
@@ -138,6 +126,6 @@ int main(int argc, char** argv) {
     refresh();
 
     return 0;    
-
-}
 */
+}
+

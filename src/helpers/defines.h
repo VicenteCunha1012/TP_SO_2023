@@ -11,6 +11,7 @@
 #include <sys/stat.h>
 #include <ctype.h>
 #include <string.h>
+#include <time.h>
 
 #define COMMAND_BUFFERSIZE 40
 #define MAX_BOTS 10

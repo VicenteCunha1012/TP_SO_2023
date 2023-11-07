@@ -55,7 +55,6 @@ int main(int argc, char **argv) {
         
         printf("sai do primeiro while\n");
 
-
         InitPayload toSend;
         initPayload(&toSend, users, mapBuffer);
 
@@ -63,15 +62,13 @@ int main(int argc, char **argv) {
             char nome[20];
             sprintf(nome, FIFO_CLIENTE, users[i].pid);
             printf("A tentar abrir %s",nome);
+            fflush(stdout);
             int tempFd = open(nome, O_RDONLY);
             if(tempFd<0) {printf("erro");exit(0);}
+            printf("A tentar escrever\n");
+            fflush(stdout);
             int nbytes = write(tempFd,&toSend, sizeof(toSend));
         }
-
-        
-
-
-        
 
         close(receiveFd);
         unlink(receiveFd);

@@ -12,7 +12,10 @@ int main(int argc, char** argv) {
         fprintf(stderr, "Erro: Sintaxe Invalida. Por favor introduza o seu nome (MAX 20 caracteres)\nExemplo: ./jogoUI \"John Doe\"\n");
         exit(0);
     }
-    
+    char FIFOname[20];
+    sprintf(FIFOname, FIFO_CLIENTE,getpid());
+    mkfifo(FIFOname , 0777);
+
     //
     
     Avatar myAvatar;
@@ -36,10 +39,7 @@ int main(int argc, char** argv) {
     //
     
     InitPayload payload;
-    char FIFOname[20];
-    sprintf(FIFOname, FIFO_CLIENTE,myAvatar.pid);
-    mkfifo(FIFOname , 0777);
-    printf("A tentar criar %s",FIFOname);
+    
     fflush(stdout);
     int receivePayloadFd = open(FIFOname , O_RDONLY);
     if(read(receivePayloadFd, &payload, sizeof(payload)) == -1) {

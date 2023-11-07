@@ -13,6 +13,8 @@ void initPayload(InitPayload *toSend, Avatar *users, const char *map);
 void createMap(char* file, char mapBuffer[MAP_ROWS][MAP_COLUMNS]);
 //void handleSignal(int signo, siginfo_t *info, void *context);
 
+int getEnvs(int* inscricao, int* minPlayers, int* duracao, int* decremento);
+
 extern char avoydables[];
 extern int newPlayerIsPlaying;
 extern const char *lockFilename;

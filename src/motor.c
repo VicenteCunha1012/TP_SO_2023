@@ -24,71 +24,57 @@
 
 
 int main(int argc, char **argv) {
-/*
-    lockFile = open(lockFilename, O_WRONLY | O_CREAT | O_EXCL, 0666);
-    if(lockFile == -1) {
-        if(errno==EEXIST) {
-            printf("Apenas pode correr uma instancia deste programa de cada vez\n");
-            exit(EXIT_FAILURE);
-        } else {
-            perror("open");
-            exit(EXIT_FAILURE);
-        }
-    }
-    signal(SIGINT, sigint_handler);
-*/
-
+    int inscricao, minPlayers, duracao, decremento; //vars do ambiente
     char mapBuffer[MAP_ROWS][MAP_COLUMNS];
-    createMap("level.txt",mapBuffer);  
-    
-    //
-    
     Avatar users[MAX_USERS];
     int currentPlayers = 0;
-	
+
+    // if(!getEnvs(&inscricao,&minPlayers,&duracao,&decremento)) {
+    //     printf("Ocorreu um erro a obter as variaveis de ambiente.\n");
+    //     exit(0);
+    // }
+
+    mkfifo(FIFO_SERVIDOR, 0777);
+    int receiveFd = open(FIFO_SERVIDOR, O_RDWR);
+    if(receiveFd < 0) {
+        printf("Ocorreu um erro a abrir o pipe");
+        exit(0);
+    }
+
+    createMap("level.txt",mapBuffer);  
+    
+    
     pid_t pid = fork();
     
     if(pid == 0) {
-    	mkfifo("jogoUIFIFO", 0666);
-    	int receiveAvatarFd = 0;
+    	
+    	
         while(currentPlayers < MAX_USERS) {	
-        	getPlayers(users, &currentPlayers, receiveAvatarFd);
+        	getPlayers(users, &currentPlayers, receiveFd);
         }
         
         printf("sai do primeiro while\n");
-/*
-        for(int i=0;i<MAX_USERS;i++) {
-            do {
-                
-                users[i].x = handleXAndY('x');
-                users[i].y = handleXAndY('y');
-            }while(charInStr(mapBuffer[users[i].x,users[i].y*2], avoydables));
-        }
-*/
+
 
         InitPayload toSend;
         initPayload(&toSend, users, mapBuffer);
 
-        int fdtantos = open("engineFIFO", O_WRONLY);
-        
-        for(int i=0;i<MAX_USERS;i++) {
-        	write(fdtantos, &toSend, sizeof(toSend));
+        for(int i=0;i<MAX_USERS;++i) {
+            char nome[20];
+            sprintf(nome, FIFO_CLIENTE, users[i].pid);
+            printf("A tentar abrir %s",nome);
+            int tempFd = open(nome, O_RDONLY);
+            if(tempFd<0) {printf("erro");exit(0);}
+            int nbytes = write(tempFd,&toSend, sizeof(toSend));
         }
-
-        int fdEngine[MAX_USERS];
-        for(int i=0;i< MAX_USERS;i++) {
-            char tempBuffer[50];
-            sprintf(tempBuffer, "%s%d",toSend.PlayersID[i].nome, toSend.PlayersID[i].pid);
-            mkfifo(tempBuffer, 0666);
-            fdEngine[i]=open(tempBuffer, O_WRONLY);
-            if(fdEngine[i]==-1) {printf("Erro no canudo");}
-            
-        }
-        printf("162");
 
         
 
-        close(receiveAvatarFd);
+
+        
+
+        close(receiveFd);
+        unlink(receiveFd);
         
     } else { //pai
         char commandBuffer[COMMAND_BUFFERSIZE]="";

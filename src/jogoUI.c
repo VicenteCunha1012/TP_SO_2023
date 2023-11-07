@@ -1,6 +1,13 @@
 #include "./helpers/algoritmos.h"
 
+void sigint_handler1(int signum) {
+    char nome[20];
+    sprintf(nome, FIFO_CLIENTE, getpid());
+    unlink(nome);   
+}
+
 int main(int argc, char** argv) {
+    signal(SIGINT, sigint_handler1);
     if(argc != 2 || strlen(argv[1]) > 20) {
         fprintf(stderr, "Erro: Sintaxe Invalida. Por favor introduza o seu nome (MAX 20 caracteres)\nExemplo: ./jogoUI \"John Doe\"\n");
         exit(0);
@@ -13,19 +20,31 @@ int main(int argc, char** argv) {
     
     //
     
-	int sendAvatarFd = open("jogoUIFIFO", O_WRONLY);
+	int sendAvatarFd = open(FIFO_SERVIDOR, O_WRONLY);
+    if(sendAvatarFd==-1) {
+        printf("Ocorreu um erro aler o sendAvatarfd\n");
+        exit(0);
+    }
 	if(write(sendAvatarFd, &myAvatar, sizeof(Avatar)) == -1) {
 		perror("Erro a enviar Avatar ao motor");
 		exit(EXIT_FAILURE);
 	}
+    printf("ja enviei");
+    fflush(stdout);
 	close(sendAvatarFd);
 	
     //
     
     InitPayload payload;
-    int receivePayloadFd = open("engineFIFO",O_RDONLY);
+    char FIFOname[20];
+    sprintf(FIFOname, FIFO_CLIENTE,myAvatar.pid);
+    mkfifo(FIFOname , 0777);
+    printf("A tentar criar %s",FIFOname);
+    fflush(stdout);
+    int receivePayloadFd = open(FIFOname , O_RDONLY);
     if(read(receivePayloadFd, &payload, sizeof(payload)) == -1) {
     	perror("Erro a receber Payload do motor");
+        fflush(stdout);
     }
     close(receivePayloadFd);
     
@@ -66,6 +85,14 @@ int main(int argc, char** argv) {
      
     wrefresh(topWindow);
     wrefresh(bottomWindow);
+
+    for(int i=0;i<MAP_ROWS;i++) {
+        for(int j=0;j<MAP_COLUMNS;j++) {
+            if(map[i][j]!='\n') {
+                mvprintw(janela, i+1, j+1, "%c",map[i][j]);
+            }
+        }
+    }
 
 
     int key;

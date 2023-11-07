@@ -14,6 +14,17 @@ const char* killMessages[] = {
     "Mataram-me :(",
 };
 
+int getEnvs(int* inscricao, int* minPlayers, int* duracao, int* decremento) {
+    *inscricao = atoi(getenv("INSCRICAO"));
+    *minPlayers = atoi(getenv("NPLAYERS"));
+    *duracao = atoi(getenv("DURACAO"));
+    *decremento = atoi(getenv("DECREMENTO"));
+    
+    if(inscricao < 0 || minPlayers > 5 || minPlayers < 0 || duracao < 0 || decremento < 0) {
+        return 0;
+    }
+    return 1;
+}
 
 
 int isNameAvailable(char nome[], Avatar array[], int tamanho) {
@@ -220,10 +231,6 @@ void sigint_handler(int signum) {
 
 void getPlayers(Avatar *users, int *currentPlayers, int receiveAvatarFd) {
 	Avatar tempAvatar;
-    if((receiveAvatarFd = open("jogoUIFIFO", O_RDONLY)) == -1) {
-    	perror("Erro a abrir jogUIFIFO");
-    	exit(EXIT_FAILURE);
-    }
     int nBytes = read(receiveAvatarFd, &tempAvatar, sizeof(Avatar));
     if(nBytes == 0) {
     	return;

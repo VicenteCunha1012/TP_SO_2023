@@ -44,5 +44,8 @@
 #define HEADER_SIZE 3
 #define COMMAND_PACKET_SIZE 50
 
+#define FIFO_CLIENTE "jogoUI%d"
+#define FIFO_SERVIDOR "engine"
+
 
 #endif

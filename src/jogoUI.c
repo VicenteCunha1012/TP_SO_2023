@@ -14,10 +14,8 @@ int main(int argc, char** argv) {
         fprintf(stderr, "Erro: Sintaxe Invalida. Por favor introduza o seu nome (MAX 20 caracteres)\nExemplo: ./jogoUI \"John Doe\"\n");
         exit(0);
     }
-    char FIFOname[20];
-    sprintf(FIFOname, FIFO_CLIENTE,getpid());
-    printf("<cliente> antes de criar pipe com nome %s\n",FIFOname);fflush(stdout); //REM
-    mkfifo(FIFOname , 0777);
+    
+
 
     //
     
@@ -38,6 +36,11 @@ int main(int argc, char** argv) {
     printf("ja enviei");
     fflush(stdout);
 	close(sendAvatarFd);
+
+    char FIFOname[20];
+    sprintf(FIFOname, FIFO_CLIENTE,getpid());
+    printf("<cliente> antes de criar pipe com nome %s\n",FIFOname);fflush(stdout); //REM
+    mkfifo(FIFOname , 0777);
 	
     //
     
@@ -54,18 +57,23 @@ int main(int argc, char** argv) {
     //
     
     puts(payload.mapa);
+
     
     //
     
     //int meuNum=0;
     for(int i=0;i<MAX_USERS;i++) {
         printf("%s,%d\n",payload.PlayersID[i].nome, payload.PlayersID[i].pid);
+        
         /*
         if(!strcmp(payload.PlayersID[i].nome,argv[1])) {
             meuNum = i+1;
         }
         */
     }
+
+    int num;
+    scanf("%d",&num);//para esperar
     
 /*
     initScreen();

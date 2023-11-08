@@ -52,8 +52,12 @@ int main(int argc, char **argv) {
         while(currentPlayers < MAX_USERS) {	
         	getPlayers(users, &currentPlayers, receiveFd);
         }
+
+        for(int i=0;i<MAX_USERS;i++) {
+            printf("%s/%d\n",users[i].nome,users[i].pid);fflush(stdout);
+        }
         
-        printf("<motor filho> sai do primeiro while\n"); //REM
+        printf("<motor filho> sai do primeiro while\n");fflush(stdout); //REM
 
         InitPayload toSend;
         initPayload(&toSend, users, mapBuffer);
@@ -63,17 +67,22 @@ int main(int argc, char **argv) {
 
         int playerFIFOs[5];
 
-        for(int i=0;i<MAX_USERS;++i) {
-            printf("<motor filho> iteracao %d\n",i);fflush(stdout); //REM
-            char nome[20];
-            sprintf(nome, FIFO_CLIENTE, users[i].pid);
-            printf("<motor filho> A tentar abrir %s\n",nome);fflush(stdout); //REM
-            playerFIFOs[i] = open(nome, O_RDONLY);
-            if(playerFIFOs[i]<0) {printf("erro");exit(0);}
-            int nbytes = write(playerFIFOs[i],&toSend, sizeof(toSend));
-        }
-        printf("<motor filho> sai do for\n");fflush(stdout);
+        printf("ERRO pids %d,%d,%d,%d,%d",users[0].pid,users[1].pid,users[2].pid,users[3].pid,users[4].pid);fflush(stdout);//REM
 
+        if(!sendInitPack(users, playerFIFOs, MAX_USERS,toSend)) {
+            printf("Ocorreu um erro a enviar informacoes aos clientes.\n");fflush(stdout);//REM
+            exit(0);
+        }
+        
+        // for(int i=0;i<MAX_USERS;++i) {
+        //     printf("<motor filho> iteracao %d\n",i);fflush(stdout); //REM
+        //     char nome[20];
+        //     sprintf(nome, FIFO_CLIENTE, users[i].pid);
+        //     printf("<motor filho> A tentar abrir %s\n",nome);fflush(stdout); //REM
+        //     playerFIFOs[i] = open(nome, O_RDONLY);
+        //     if(playerFIFOs[i]<0) {printf("erro");exit(0);}
+        //     int nbytes = write(playerFIFOs[i],&toSend, sizeof(toSend));
+        // }
         close(receiveFd);
         unlink(receiveFd);
         

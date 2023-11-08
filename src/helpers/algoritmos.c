@@ -62,6 +62,7 @@ int handleXAndY(char escolha) {
 
 void initPayload(InitPayload *toSend, Avatar *users, const char *map) {
 	for(int i=0;i<MAX_USERS;i++) {
+        printf("\n<initPayload> iteracao%d\n",i);
         strcpy(toSend->PlayersID[i].nome, users[i].nome);
         toSend->PlayersID[i].icone = users[i].icone;
         toSend->PlayersID[i].state = users[i].state;
@@ -215,6 +216,22 @@ void sigalarm_handler(int signum) {
     printf("\nespetaram-me: %d\n", signum);
     fflush(stdout);
     newPlayerIsPlaying=0;
+}
+
+int sendInitPack(Avatar users[],int* playersFifos[], int userCount, InitPayload toSend) {
+    for(int i=0;i<userCount;i++) {
+        printf("<sendInitPack> iteracao %d\n",i);fflush(stdout); //REM
+        char nome[20];
+        sprintf(nome, FIFO_CLIENTE, users[i].pid);
+        printf("<sendInitPack> A tentar abrir %s\n",nome);fflush(stdout); //REM
+        playersFifos[i] = open(nome, O_WRONLY);
+        if(playersFifos[i]<0){printf("erro");exit(0);}
+        int nbytes = write(playersFifos[i],&toSend, sizeof(toSend));
+        if(nbytes==0) return 0;
+        printf("<sendInitPack> fim de iteracao %d\n",i);
+    }
+    printf("<sendInitPack> sai do for\n");
+    return 1;
 }
 
 void sigint_handler(int signum) {

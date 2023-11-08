@@ -3,7 +3,9 @@
 void sigint_handler1(int signum) {
     char nome[20];
     sprintf(nome, FIFO_CLIENTE, getpid());
-    unlink(nome);   
+    unlink(nome);  
+    printf("\n\ncliente fechado\n\n"); 
+    exit(0);
 }
 
 int main(int argc, char** argv) {
@@ -14,6 +16,7 @@ int main(int argc, char** argv) {
     }
     char FIFOname[20];
     sprintf(FIFOname, FIFO_CLIENTE,getpid());
+    printf("<cliente> antes de criar pipe com nome %s\n",FIFOname);fflush(stdout); //REM
     mkfifo(FIFOname , 0777);
 
     //

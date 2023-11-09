@@ -19,7 +19,7 @@ cd src
 
 gnome-terminal -- bash -c "./motor; exit"
 sleep 1
-gnome-terminal -- bash -c "./jogoUI nome1; exit"
+gnome-terminal -- bash -c "./jogoUI nome1; exec bash"
 sleep 0.3
 gnome-terminal -- bash -c "./jogoUI nome2; exit"
 sleep 0.3

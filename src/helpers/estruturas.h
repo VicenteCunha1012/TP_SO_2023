@@ -3,7 +3,7 @@
 
 #include "defines.h"
 
-typedef void (*CommandFunc)(char* args);
+typedef int (*CommandFunc)(char* args);
 
 typedef struct {
     char nome[USER_NAME_SIZE];

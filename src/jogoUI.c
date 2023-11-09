@@ -57,9 +57,7 @@ int main(int argc, char** argv) {
     //
     
     puts(payload.mapa);
-
-    int numero;
-    scanf("%d",&numero);
+    
     
 
     initScreen();
@@ -74,19 +72,18 @@ int main(int argc, char** argv) {
     ungetch('.');
     getch();    
     
-    if(myAvatar.isPlaying==1) {
-        mvprintw(bottomWindow, 1, 1,"%s","Sou jogador.");
-    } else {
-        mvprintw(bottomWindow, 1, 1,"%s","Sou espectador.");
-    }
-     
     wrefresh(topWindow);
     wrefresh(bottomWindow);
+
+    printf("depois de refresh\n");
 
     for(int i=0;i<MAP_ROWS;i++) {
         for(int j=0;j<MAP_COLUMNS;j++) {
             if(payload.mapa[i][j]!='\n') {
+                printf("\nA tenta r escrever na topWindow em %d:%d",i+1,j+1);
+                printf("->%c",payload.mapa[i][j]);
                 mvprintw(topWindow, i+1, j+1, "%c",payload.mapa[i][j]);
+                
             }
         }
     }
@@ -95,6 +92,7 @@ int main(int argc, char** argv) {
     int key;
     char command[STRING_SIZE];
     while ((key = getch())) {
+        printf("entrou em while");
         switch(key) {
         case(KEY_UP):
             mvwprintw(topWindow, myAvatar.y, myAvatar.x, "%c", ' ');

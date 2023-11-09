@@ -180,7 +180,7 @@ int validateMsg(char* args){
         return 0;
     }//executa o comando;
 }
-int validateExit() {
+int validateExit(char* args) {
     if(!strcmp(args,"")) {
         //executa o comando ig
     } else {
@@ -194,7 +194,7 @@ Command jogoUICommands[] = {
     {"players",validatePlayers},
     {"msg"    ,validateMsg},
     {"exit"   ,validateExit}
-}
+};
 
 //*ISTO SAO COMANDOS DO JOGOUI
 //ISTO SAO COMANDOS DO VROOM

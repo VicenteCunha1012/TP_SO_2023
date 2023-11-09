@@ -2,25 +2,6 @@
 #include <errno.h>
 
 
-/*
-	Precisa de:
-		-> Array dos jogadores
-		-> Estrutura dos jogadores: (nome, pos_ atual, pid, )
-		-> Estrutura packet com union 
-	
-	Mensagens entre jogadores:
-		-> jogoUI envia nome ao motor
-		-> Motor envia pid ao jogoUI
-		-> jogoUI manda um sinal para o pid recebido
-		-> o pid recebido prepara-se para receber mensagem
-		-> jogoUI envia mensagem
-	
-		
-	Update dos players:
-		-> Apos avaliacao das teclas
-		-> Enviar estado ao motor (x, y, etc)
-		-> Motor envia estado aos players	
-*/
 
 
 int main(int argc, char **argv) {

@@ -161,6 +161,44 @@ Command commands[] = {
     {"end", endCommand}    
 };
 
+//ISTO SAO COMANDOS DO JOGOUI
+
+int validatePlayers(char* args){
+    if(!strcmp(args,"")) {
+        //executa o comando ig
+    } else {
+        return 0;
+    }
+}
+int validateMsg(char* args){
+    //msg joao ola joao tudo bem
+    //joao ola joao tudo bem
+    char arg1[20], arg2[20];
+    sscanf(args,"%s %[^\n]",arg1,arg2);
+    
+    if(!strcmp(arg1,"") || !strcmp(arg2,"")) {
+        return 0;
+    }//executa o comando;
+}
+int validateExit() {
+    if(!strcmp(args,"")) {
+        //executa o comando ig
+    } else {
+        return 0;
+    }
+}
+
+
+
+Command jogoUICommands[] = {
+    {"players",validatePlayers},
+    {"msg"    ,validateMsg},
+    {"exit"   ,validateExit}
+}
+
+//*ISTO SAO COMANDOS DO JOGOUI
+//ISTO SAO COMANDOS DO VROOM
+
 void kickCommand(char* args) {
     printf("Kicking %s!\n", args);
 }

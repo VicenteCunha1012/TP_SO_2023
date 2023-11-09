@@ -22,7 +22,7 @@ extern int newPlayerIsPlaying;
 extern const char *lockFilename;
 extern const char *killMessages[];
 
-typedef void (*CommandFunc)(char* args);
+typedef int (*CommandFunc)(char* args);
 
 void flattenMap(char mapToFlatten[MAP_ROWS][MAP_COLUMNS],char flatMap[]);
 extern Command commands[]; // Command Lookup Table

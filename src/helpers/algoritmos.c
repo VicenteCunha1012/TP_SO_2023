@@ -230,7 +230,6 @@ int sendInitPack(Avatar users[],int* playersFifos[], int userCount, InitPayload 
         if(nbytes==0) return 0;
         printf("<sendInitPack> fim de iteracao %d\n",i);
     }
-    printf("<sendInitPack> sai do for\n");
     return 1;
 }
 

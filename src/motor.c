@@ -67,11 +67,15 @@ int main(int argc, char **argv) {
 
         int playerFIFOs[5];
 
-        printf("ERRO pids %d,%d,%d,%d,%d",users[0].pid,users[1].pid,users[2].pid,users[3].pid,users[4].pid);fflush(stdout);//REM
+        
 
         if(!sendInitPack(users, playerFIFOs, MAX_USERS,toSend)) {
             printf("Ocorreu um erro a enviar informacoes aos clientes.\n");fflush(stdout);//REM
             exit(0);
+        }
+
+        for(int i=0;i<MAX_USERS;i++) {
+            printf("%s,%d\n",toSend.PlayersID[i].nome,toSend.PlayersID[i].pid);
         }
         
         // for(int i=0;i<MAX_USERS;++i) {
@@ -91,6 +95,8 @@ int main(int argc, char **argv) {
 
         while(strcmp(commandBuffer,"exit")) {
             if(!strcmp(commandBuffer,"exit")) {
+                close(receiveFd);
+                unlink(FIFO_SERVIDOR);
                 exit(0);
             }
             readCommand(commandBuffer,sizeof(commandBuffer));

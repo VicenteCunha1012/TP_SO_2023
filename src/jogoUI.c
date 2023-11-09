@@ -58,24 +58,10 @@ int main(int argc, char** argv) {
     
     puts(payload.mapa);
 
+    int numero;
+    scanf("%d",&numero);
     
-    //
-    
-    //int meuNum=0;
-    for(int i=0;i<MAX_USERS;i++) {
-        printf("%s,%d\n",payload.PlayersID[i].nome, payload.PlayersID[i].pid);
-        
-        /*
-        if(!strcmp(payload.PlayersID[i].nome,argv[1])) {
-            meuNum = i+1;
-        }
-        */
-    }
 
-    int num;
-    scanf("%d",&num);//para esperar
-    
-/*
     initScreen();
     
     WINDOW *topWindow = newwin(TOP_SCREEN_HEIGTH, TOP_SCREEN_WIDTH, 0, (COLS - TOP_SCREEN_WIDTH) / 2);
@@ -99,8 +85,8 @@ int main(int argc, char** argv) {
 
     for(int i=0;i<MAP_ROWS;i++) {
         for(int j=0;j<MAP_COLUMNS;j++) {
-            if(map[i][j]!='\n') {
-                mvprintw(janela, i+1, j+1, "%c",map[i][j]);
+            if(payload.mapa[i][j]!='\n') {
+                mvprintw(topWindow, i+1, j+1, "%c",payload.mapa[i][j]);
             }
         }
     }
@@ -164,6 +150,6 @@ int main(int argc, char** argv) {
     refresh();
 
     return 0;    
-*/
+
 }
 

@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "algoritmos.h": "c",
+        "estruturas.h": "c",
+        "defines.h": "c"
+    }
+}

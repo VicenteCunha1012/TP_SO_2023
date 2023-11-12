@@ -20,7 +20,7 @@ int getEnvs(int* inscricao, int* minPlayers, int* duracao, int* decremento) {
     *duracao = atoi(getenv("DURACAO"));
     *decremento = atoi(getenv("DECREMENTO"));
     
-    if(inscricao < 0 || minPlayers > 5 || minPlayers < 0 || duracao < 0 || decremento < 0) {
+    if(*inscricao < 0 || *minPlayers > 5 || *minPlayers < 0 || *duracao < 0 || *decremento < 0) {
         return 0;
     }
     return 1;

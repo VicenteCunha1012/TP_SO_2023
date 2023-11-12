@@ -2,9 +2,14 @@
 #include <errno.h>
 
 
+int RUNNING = 1;
 
+void termina(int sig) {
+	RUNNING = 0;
+}
 
 int main(int argc, char **argv) {
+#if 0
     int inscricao, minPlayers, duracao, decremento; //vars do ambiente
     char mapBuffer[MAP_ROWS][MAP_COLUMNS];
     Avatar users[MAX_USERS];
@@ -91,35 +96,61 @@ int main(int argc, char **argv) {
         }
 
     }
-
+#endif
     //Exemplo de como receber dados do bot
-	/*
+#if 1
+	signal(SIGINT, termina);
     char frase[20];
-    int fd[2];
-    if(pipe(fd) == -1){
+    int pipe_fd[2];
+    if(pipe(pipe_fd) == -1){
     	return 1;
     }
     pid_t pid = fork();
     int child = pid == 0;
     if(child) {
-    	close(WRITE);
-    	dup(fd[WRITE]);
-    	close(fd[WRITE]);
-    	close(fd[READ]);
-    	
-    	execl("bot", "bot", NULL);
-    	exit(0);
+    	close(pipe_fd[0]); // Close read end of the pipe
+
+        // Redirect stdout to the write end of the pipe
+        dup2(pipe_fd[1], STDOUT_FILENO);
+
+        close(pipe_fd[1]); // Close the original write end of the pipe
+
+        // Execute the bot program
+        execlp("./bot", "./bot", "2", "2", NULL);
+
+        // If execl fails
+        perror("execl");
+        exit(EXIT_FAILURE);
 
     } else {
-    	close(fd[WRITE]);
-    	read(fd[READ], frase, sizeof(frase));
-    	close(fd[READ]);
-    	
-    	wait(NULL);
+    	close(pipe_fd[1]); // Close write end of the pipe
+
+        char buffer[256];
+        ssize_t bytesRead;
+
+        while (RUNNING) {
+            bytesRead = read(pipe_fd[0], buffer, sizeof(buffer) - 1);
+
+            if (bytesRead > 0) {
+                buffer[bytesRead] = '\0'; // Null-terminate the string
+                printf("Received: %s", buffer); // Store it in your variable or process as needed
+                fflush(stdout);
+            }
+
+            //sleep(1);
+        }
+
+        close(pipe_fd[0]); // Close read end of the pipe
+
+        // Wait for the child process to complete
+        waitpid(pid, NULL, 0);
+        printf("A sair\n");
+        fflush(stdout);
     }
     
-    printf("%s", frase);
-    */
+
+
+#endif
 
     //char commandInput[COMMAND_BUFFERSIZE];
     //readCommand(commandInput, sizeof(commandInput));

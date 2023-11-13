@@ -9,7 +9,7 @@ void termina(int sig) {
 }
 
 int main(int argc, char **argv) {
-#if 0
+#if 1
     int inscricao, minPlayers, duracao, decremento; //vars do ambiente
     char mapBuffer[MAP_ROWS][MAP_COLUMNS];
     Avatar users[MAX_USERS];
@@ -105,8 +105,8 @@ int main(int argc, char **argv) {
     if(pipe(pipe_fd) == -1){
     	return 1;
     }
-    pid_t pid = fork();
-    int child = pid == 0;
+    pid_t pid2 = fork();
+    int child = pid2 == 0;
     if(child) {
     	close(pipe_fd[0]); // Close read end of the pipe
 
@@ -143,7 +143,7 @@ int main(int argc, char **argv) {
         close(pipe_fd[0]); // Close read end of the pipe
 
         // Wait for the child process to complete
-        waitpid(pid, NULL, 0);
+        waitpid(pid2, NULL, 0);
         printf("A sair\n");
         fflush(stdout);
     }

@@ -165,7 +165,7 @@ Command commands[] = {
 
 int validatePlayers(char* args){
     if(!strcmp(args,"")) {
-        //executa o comando ig
+        return 1; //executa
     } else {
         return 0;
     }
@@ -177,12 +177,13 @@ int validateMsg(char* args){
     sscanf(args,"%s %[^\n]",arg1,arg2);
     
     if(!strcmp(arg1,"") || !strcmp(arg2,"")) {
-        return 0;
-    }//executa o comando;
+        return 0; 
+    }
+    return 1; //executa
 }
 int validateExit(char* args) {
     if(!strcmp(args,"")) {
-        //executa o comando ig
+        return 1; //executa
     } else {
         return 0;
     }

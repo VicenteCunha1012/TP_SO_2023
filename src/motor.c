@@ -25,11 +25,12 @@ int main(int argc, char **argv) {
     int currentPlayers = 0;
 
     
-
-    // if(!getEnvs(&inscricao,&minPlayers,&duracao,&decremento)) {
-    //     printf("Ocorreu um erro a obter as variaveis de ambiente.\n");
-    //     exit(0);
-    // }
+    
+    if(!getEnvs(&inscricao,&minPlayers,&duracao,&decremento)) {
+        printf("Ocorreu um erro a obter as variaveis de ambiente.\n");
+        exit(0);
+    }
+    printf("Vars de ambiente: %d,%d,%d,%d\n",inscricao,minPlayers,duracao,decremento);
 
     mkfifo(FIFO_SERVIDOR, 0777);
     int receiveFd = open(FIFO_SERVIDOR, O_RDWR);

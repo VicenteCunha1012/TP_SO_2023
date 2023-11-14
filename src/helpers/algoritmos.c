@@ -15,6 +15,7 @@ const char* killMessages[] = {
 };
 
 int getEnvs(int* inscricao, int* minPlayers, int* duracao, int* decremento) {
+    
     *inscricao = atoi(getenv("INSCRICAO"));
     *minPlayers = atoi(getenv("NPLAYERS"));
     *duracao = atoi(getenv("DURACAO"));

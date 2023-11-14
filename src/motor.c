@@ -13,34 +13,39 @@ void termina(int sig) {
 
 
 int main(int argc, char **argv) {
+	// Verifica se ja existe um motor a correr
     if(checkRunningInstance(LOCK_FILENAME)) {
         printf("Ja existe uma instancia deste programa a correr nesta maquina.\n");
         exit(0);
     }
     
-    signal(SIGINT,sigint_handler);
+    // Prepara o sinal para limpar
+    signal(SIGINT, sigint_handler);
 #if 1
-    int inscricao, minPlayers, duracao, decremento; //vars do ambiente
-    char mapBuffer[MAP_ROWS][MAP_COLUMNS];
-    Avatar users[MAX_USERS];
-    int currentPlayers = 0;
+	
+    int inscricao, minPlayers, duracao, decremento; // Variaveis de ambiente
+    char mapBuffer[MAP_ROWS][MAP_COLUMNS]; 			// Mapa do jogo
+    Avatar users[MAX_USERS];						// Array de utilizadores ("clientes")
+    int currentPlayers = 0;							// Numero atual de utilizadores
+    int receiveFd;
     
-    
+    // Recebe as variaveis de ambiente
     if(!getEnvs(&inscricao,&minPlayers,&duracao,&decremento)) {
-        printf("Ocorreu um erro a obter as variaveis de ambiente.\n");
+        fprintf(stderr, "Ocorreu um erro a obter as variaveis de ambiente.\n");
         exit(0);
     }
+    
     printf("Vars de ambiente: %d,%d,%d,%d\n",inscricao,minPlayers,duracao,decremento);
 
-    mkfifo(FIFO_SERVIDOR, 0777);
-    int receiveFd = open(FIFO_SERVIDOR, O_RDWR);
-    if(receiveFd < 0) {
+													
+    mkfifo(FIFO_SERVIDOR, 0777);						// Cria o Named Pipe para receber informacao
+    if((receiveFd = open(FIFO_SERVIDOR, O_RDWR)) < 0) {			
         printf("Ocorreu um erro a abrir o pipe");
         exit(0);
     }
 
+	// Le o mapa de um ficheiro e coloca em mapBuffer
     createMap("level.txt",mapBuffer);  
-    
     
     pid_t pid = fork();
     

@@ -14,7 +14,7 @@ const char* killMessages[] = {
     "Mataram-me :(",
 };
 
-int getEnvs(int* inscricao, int* minPlayers, int* duracao, int* decremento) {
+int \s(int* inscricao, int* minPlayers, int* duracao, int* decremento) {
     if(getenv("INSCRICAO")==NULL || getenv("NPLAYERS")==NULL || getenv("DURACAO")==NULL || getenv("DECREMENTO")==NULL) {
         return 0;
     }
@@ -167,28 +167,48 @@ Command commands[] = {
 
 //ISTO SAO COMANDOS DO JOGOUI
 
-int validatePlayers(char* args){
-    if(!strcmp(args,"")) {
-        return 1; //executa
-    } else {
-        return 0;
-    }
-}
-int validateMsg(char* args){
-    //msg joao ola joao tudo bem
-    //joao ola joao tudo bem
-    char arg1[20], arg2[20];
-    sscanf(args,"%s %[^\n]",arg1,arg2);
+// int validatePlayers(char* args){
+//     if(!strcmp(args,"")) {
+//         return 1; //executa
+//     } else {
+//         return 0;
+//     }
+// }
+// int validateMsg(char* args){
+//     //msg joao ola joao tudo bem
+//     //joao ola joao tudo bem
+//     char arg1[20], arg2[20];
+//     sscanf(args,"%s %[^\n]",arg1,arg2);
     
-    if(!strcmp(arg1,"") || !strcmp(arg2,"")) {
-        return 0; 
-    }
-    return 1; //executa
-}
-int validateExit(char* args) {
-    if(!strcmp(args,"")) {
-        return 1; //executa
-    } else {
+//     if(!strcmp(arg1,"") || !strcmp(arg2,"")) {
+//         return 0; 
+//     }
+//     return 1; //executa
+// }
+// int validateExit(char* args) {
+//     if(!strcmp(args,"")) {
+//         return 1; //executa
+//     } else {
+//         return 0;
+//     }
+// }
+
+int validateCommand(char* args) {
+    char firstToken[20], secondToLast[100];
+    sscanf(args,"%s %[^\n]",firstToken,secondToLast);
+    if(!strcmp(firstToken,"players")) {
+        //UNICO exemplo *players
+        
+    }else if(!strcmp(firstToken,"msg")) {
+        //exemplo *msg joao ola joao
+        char nome[USER_NAME_SIZE];
+        char thirdToLast[]
+        sscanf(secondToLast,"%s %[")
+    }else if(!strcmp(firstToken,"exit")) {
+        //UNICO exemplo *exit
+        if(!strcmp(secondToLast,"")) {
+            return 1;
+        }
         return 0;
     }
 }

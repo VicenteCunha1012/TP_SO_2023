@@ -49,7 +49,6 @@ int main(int argc, char **argv) {
     	
         while(currentPlayers < MAX_USERS) {	
         	getPlayers(users, &currentPlayers, receiveFd);
-            printf("%d\n",users[currentPlayers].pid);
         }
 
         for(int i=0;i<MAX_USERS;i++) {

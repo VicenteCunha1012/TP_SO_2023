@@ -14,7 +14,7 @@ const char* killMessages[] = {
     "Mataram-me :(",
 };
 
-int \s(int* inscricao, int* minPlayers, int* duracao, int* decremento) {
+int getEnvs(int* inscricao, int* minPlayers, int* duracao, int* decremento) {
     if(getenv("INSCRICAO")==NULL || getenv("NPLAYERS")==NULL || getenv("DURACAO")==NULL || getenv("DECREMENTO")==NULL) {
         return 0;
     }
@@ -330,12 +330,8 @@ void sigint_handler(int signum) {
     srand(time(NULL));
     
     int random = (rand() % 8) ;
-<<<<<<< HEAD
+
     printf("\n%s: %d\n", killMessages[random], signum);
-    //Terminar jogoui
-=======
-    printf("\n%s\n", killMessages[random]);
->>>>>>> bfefc1ba09676f625b3e1ea920a595d37eb13215
 
     //close(lockFile);
     unlink(LOCK_FILENAME);

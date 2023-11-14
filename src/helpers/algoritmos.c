@@ -257,7 +257,24 @@ void sigalarm_handler(int signum) {
     newPlayerIsPlaying=0;
 }
 int checkRunningInstance(char* filename) {
-    int fd = open(filename, O_RDONLY);
+    int fd = open(filename, O_RDONLY | O_CREAT | O_EXCL, 0666);
+    // lockFile = open(lockFilename, O_WRONLY | O_CREAT | O_EXCL, 0666);
+    // if(lockFile == -1) {
+    //     if(errno==EEXIST) {
+    //         printf("Apenas pode correr uma instancia deste programa de cada vez\n");
+    //         exit(EXIT_FAILURE);
+    //     } else {
+    //         perror("open");
+    //         exit(EXIT_FAILURE);
+    //     }
+    // }
+    if(fd == -1) {
+        if(errno==EEXIST) {
+            return 1;
+        }
+    }
+    return 0;
+
     
 }
 
@@ -282,8 +299,8 @@ void sigint_handler(int signum) {
     int random = (rand() % 8) ;
     printf("\n%s: %d\n", killMessages[random], signum);
 
-    close(lockFile);
-    unlink(lockFilename);
+    //close(lockFile);
+    unlink(LOCK_FILENAME);
     exit(0);
 }
 

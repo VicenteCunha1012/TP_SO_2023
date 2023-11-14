@@ -12,6 +12,7 @@
 #include <ctype.h>
 #include <string.h>
 #include <time.h>
+#include <errno.h>
 
 #define COMMAND_BUFFERSIZE 40
 #define MAX_BOTS 10
@@ -46,6 +47,7 @@
 
 #define FIFO_CLIENTE "jogoUI%d"
 #define FIFO_SERVIDOR "engine"
+#define LOCK_FILENAME ".lock"
 
 
 #endif

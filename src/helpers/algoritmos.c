@@ -70,7 +70,7 @@ void initPayload(InitPayload *toSend, Avatar *users, const char *map) {
         toSend->PlayersID[i].x = users[i].x;
         toSend->PlayersID[i].y = users[i].y;
         toSend->PlayersID[i].pid = users[i].pid;
-        toSend->PlayersID[i].pid = users[i].isPlaying;
+        toSend->PlayersID[i].isPlaying = users[i].isPlaying;
     }
     strcpy(toSend->mapa, map);
 }

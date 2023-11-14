@@ -21,7 +21,6 @@ int main(int argc, char** argv) {
     
     Avatar myAvatar;
     initAvatar(&myAvatar, argv[1]);
-    
     //
     
 	int sendAvatarFd = open(FIFO_SERVIDOR, O_WRONLY);
@@ -29,7 +28,7 @@ int main(int argc, char** argv) {
         printf("Ocorreu um erro aler o sendAvatarfd\n");
         exit(0);
     }
-	if(write(sendAvatarFd, &myAvatar, sizeof(Avatar)) == -1) {
+	if(write(sendAvatarFd, &myAvatar, sizeof(myAvatar)) == -1) {
 		perror("Erro a enviar Avatar ao motor");
 		exit(EXIT_FAILURE);
 	}
@@ -79,13 +78,21 @@ int main(int argc, char** argv) {
 
     for(int i=0;i<MAP_ROWS;i++) {
         for(int j=0;j<MAP_COLUMNS;j++) {
-            if(payload.mapa[i][j]!='\n') {
+            if(payload.mapa[i][j]!='\n') {  
                 //mvprintw(topWindow, i+1, j+1, "%c",payload.mapa[i][j]);
                 mvwaddch(topWindow, i+1, j+1, payload.mapa[i][j]);
+                
                 
             }
         }
     }
+    for(int i=0;i<MAX_USERS;i++) {
+        mvprintw(bottomWindow, i+1,2, "%s,%d\n",payload.PlayersID[i].nome, payload.PlayersID[i].pid);
+        printf("%s,%d\n",payload.PlayersID[i].nome, payload.PlayersID[i].pid);
+    }
+
+    ungetch('.');
+    getch();
 
 
     int key;

@@ -37,6 +37,7 @@ int main(int argc, char **argv) {
     	
         while(currentPlayers < MAX_USERS) {	
         	getPlayers(users, &currentPlayers, receiveFd);
+            printf("%d\n",users[currentPlayers].pid);
         }
 
         for(int i=0;i<MAX_USERS;i++) {
@@ -60,9 +61,7 @@ int main(int argc, char **argv) {
             exit(0);
         }
 
-        for(int i=0;i<MAX_USERS;i++) {
-            printf("%s,%d\n",toSend.PlayersID[i].nome,toSend.PlayersID[i].pid);
-        }
+        
         
         // for(int i=0;i<MAX_USERS;++i) {
         //     printf("<motor filho> iteracao %d\n",i);fflush(stdout); //REM

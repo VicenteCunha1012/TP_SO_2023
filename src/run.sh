@@ -12,19 +12,24 @@ fi
 
 cd ..
 
-make
+output=$(make)
 
-cd src
+output=$(make)
 
+if [[ $output == *"Error"* ]]; then 
+  echo "Erro no make"
+else 
+  cd src
 
-gnome-terminal --full-screen -- bash -c "./motor; exit"
-sleep 0.5
-gnome-terminal  --full-screen -- bash -c "./jogoUI nome1; exec bash"
-sleep 0.1
-gnome-terminal --full-screen -- bash -c "./jogoUI nome2; exit"
-sleep 0.1
-gnome-terminal --full-screen -- bash -c "./jogoUI nome3; exit"
-sleep 0.1
-gnome-terminal  --full-screen -- bash -c "./jogoUI nome4; exit"
-sleep 0.1
-gnome-terminal --full-screen -- bash -c "./jogoUI nome5; exit"
+  gnome-terminal --full-screen -- bash -c "./motor; exit"
+  sleep 0.5
+  gnome-terminal --full-screen -- bash -c "./jogoUI nome1; exec bash"
+  sleep 0.1
+  gnome-terminal --full-screen -- bash -c "./jogoUI nome2; exit"
+  sleep 0.1
+  gnome-terminal --full-screen -- bash -c "./jogoUI nome3; exit"
+  sleep 0.1
+  gnome-terminal --full-screen -- bash -c "./jogoUI nome4; exit"
+  sleep 0.1
+  gnome-terminal --full-screen -- bash -c "./jogoUI nome5; exit"
+fi

@@ -256,6 +256,10 @@ void sigalarm_handler(int signum) {
     fflush(stdout);
     newPlayerIsPlaying=0;
 }
+int checkRunningInstance(char* filename) {
+    int fd = open(filename, O_RDONLY);
+    
+}
 
 int sendInitPack(Avatar users[],int* playersFifos[], int userCount, InitPayload toSend) {
     for(int i=0;i<userCount;i++) {

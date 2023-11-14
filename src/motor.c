@@ -9,6 +9,9 @@ void termina(int sig) {
 }
 
 int main(int argc, char **argv) {
+    if(checkRunningInstance(LOCK_FILENAME)) {
+        
+    }
 #if 1
     int inscricao, minPlayers, duracao, decremento; //vars do ambiente
     char mapBuffer[MAP_ROWS][MAP_COLUMNS];

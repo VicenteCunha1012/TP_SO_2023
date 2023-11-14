@@ -5,6 +5,8 @@
 
 int sendInitPack(Avatar users[],int* playersFifos[], int userCount, InitPayload toSend);
 
+int checkRunningInstance(char* filename);
+
 int handleXAndY(char escolha);
 int charInStr(char caracter, char string[]);
 int isNameAvailable(char nome[],Avatar array[], int tamanho);

@@ -15,6 +15,8 @@ int main(int argc, char **argv) {
     Avatar users[MAX_USERS];
     int currentPlayers = 0;
 
+    
+
     // if(!getEnvs(&inscricao,&minPlayers,&duracao,&decremento)) {
     //     printf("Ocorreu um erro a obter as variaveis de ambiente.\n");
     //     exit(0);

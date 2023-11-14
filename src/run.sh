@@ -23,7 +23,7 @@ else
 
   gnome-terminal --full-screen -- bash -c "./motor; exit"
   sleep 0.5
-  gnome-terminal --full-screen -- bash -c "./jogoUI nome1; exec bash"
+  gnome-terminal --full-screen -- bash -c "./jogoUI nome1; exit"
   sleep 0.1
   gnome-terminal --full-screen -- bash -c "./jogoUI nome2; exit"
   sleep 0.1

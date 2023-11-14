@@ -86,10 +86,6 @@ int main(int argc, char** argv) {
             }
         }
     }
-    for(int i=0;i<MAX_USERS;i++) {
-        mvprintw(bottomWindow, i+1,2, "%s,%d\n",payload.PlayersID[i].nome, payload.PlayersID[i].pid);
-        printf("%s,%d\n",payload.PlayersID[i].nome, payload.PlayersID[i].pid);
-    }
 
     ungetch('.');
     getch();

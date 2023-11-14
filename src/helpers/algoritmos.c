@@ -262,13 +262,13 @@ int sendInitPack(Avatar users[],int* playersFifos[], int userCount, InitPayload 
         printf("<sendInitPack> iteracao %d\n",i);fflush(stdout); //REM
         char nome[20];
         sprintf(nome, FIFO_CLIENTE, users[i].pid);
-        printf("<sendInitPack> A tentar abrir %s\n",nome);fflush(stdout); //REM
         playersFifos[i] = open(nome, O_WRONLY);
-        if(playersFifos[i]<0){printf("erro");exit(0);}
+        if(playersFifos[i]<0){printf("<sendInitPack> erro a abrir pipe de cliente %d",i);exit(0);}
         int nbytes = write(playersFifos[i],&toSend, sizeof(toSend));
         if(nbytes==0) return 0;
         printf("<sendInitPack> fim de iteracao %d\n",i);
     }
+    printf("<sendInitPack> em principio todos os initpacks foram enviados\n");
     return 1;
 }
 

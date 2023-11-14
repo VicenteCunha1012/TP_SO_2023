@@ -61,5 +61,7 @@ void sigalarm_handler(int signum);
 void sigint_handler(int signum);
 void getPlayers(Avatar *users, int *currentPlayers, int receiveAvatarFd);
 
+void initBot(int interval, int duration);
+void makeOpenEnginePipe(int *receiveFd);
 
 #endif

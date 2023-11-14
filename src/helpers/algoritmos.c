@@ -147,11 +147,8 @@ void createMap(char* file, char mapBuffer[MAP_ROWS][MAP_COLUMNS]) {
     for(int i = 0; i < MAP_ROWS; ++i) {
         for(int j = 0; j < MAP_COLUMNS; ++j) {
             read(fd, &mapBuffer[i][j], sizeof(char));
-        }
-        
+        }  
     } 
-    
-    
 }
 
 
@@ -430,6 +427,70 @@ void getPlayers(Avatar *users, int *currentPlayers, int receiveAvatarFd) {
     }
         users[*currentPlayers] = tempAvatar;
         (*currentPlayers)++;
+}
+
+int RUNNING = 1;
+
+void termina(int sig) {
+	RUNNING = 0;
+}
+
+void initBot(int interval, int duration) {
+	char intervalBuffer[3];
+	sprintf(intervalBuffer, "%d", interval);
+	char durationBuffer[3];
+	sprintf(durationBuffer, "%d", duration);
+	signal(SIGINT, termina);
+    char frase[20];
+    int pipe_fd[2];
+    if(pipe(pipe_fd) == -1){
+    	return 1;
+    }
+    pid_t pid2 = fork();
+    int child = pid2 == 0;
+    if(child) {
+    	close(pipe_fd[0]); 
+
+        dup2(pipe_fd[1], STDOUT_FILENO);
+
+        close(pipe_fd[1]);
+
+        execlp("./bot", "./bot", intervalBuffer, durationBuffer, NULL);
+
+        perror("execl");
+        exit(EXIT_FAILURE);
+
+    } else {
+    	close(pipe_fd[1]);
+
+        char buffer[256];
+        ssize_t bytesRead;
+
+        while (RUNNING) {
+            bytesRead = read(pipe_fd[0], buffer, sizeof(buffer) - 1);
+
+            if (bytesRead > 0) {
+                buffer[bytesRead] = '\0'; 
+                printf("Received: %s", buffer);
+                fflush(stdout);
+            }
+        }
+
+        close(pipe_fd[0]); 
+
+        waitpid(pid2, NULL, 0);
+        printf("A sair\n");
+        fflush(stdout);
+    }
+}
+
+void makeOpenEnginePipe(int *receiveFd) {
+	mkfifo(FIFO_SERVIDOR, 0777);
+    
+    if((*receiveFd = open(FIFO_SERVIDOR, O_RDWR)) < 0) {
+        printf("Ocorreu um erro a abrir o pipe");
+        exit(0);
+    }
 }
 
 

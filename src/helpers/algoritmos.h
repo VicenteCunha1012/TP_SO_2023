@@ -7,6 +7,8 @@ int sendInitPack(Avatar users[],int* playersFifos[], int userCount, InitPayload 
 
 int checkRunningInstance(char* filename);
 
+void openEnginePipe(int *receiveFd);
+void initBot(int interval, int duration);
 int handleXAndY(char escolha);
 int charInStr(char caracter, char string[]);
 int isNameAvailable(char nome[],Avatar array[], int tamanho);

@@ -30,6 +30,13 @@ int getEnvs(int* inscricao, int* minPlayers, int* duracao, int* decremento) {
     return 1;
 }
 
+void openEnginePipe(int *receiveFd) {
+	mkfifo(FIFO_SERVIDOR, 0777);						// Cria o Named Pipe para receber informacao
+    if((*receiveFd = open(FIFO_SERVIDOR, O_RDWR)) < 0) {			
+        printf("Ocorreu um erro a abrir o pipe");
+        exit(0);
+    }
+}
 
 int isNameAvailable(char nome[], Avatar array[], int tamanho) {
     for(int i = 0; i < tamanho; ++i) {
@@ -283,12 +290,14 @@ int checkRunningInstance(char* filename) {
 }
 
 int sendInitPack(Avatar users[],int* playersFifos[], int userCount, InitPayload toSend) {
-    for(int i=0;i<userCount;i++) {
-        printf("<sendInitPack> iteracao %d\n",i);fflush(stdout); //REM
+    for(int i = 0; i < userCount; ++i) {
         char nome[20];
         sprintf(nome, FIFO_CLIENTE, users[i].pid);
         playersFifos[i] = open(nome, O_WRONLY);
-        if(playersFifos[i]<0){printf("<sendInitPack> erro a abrir pipe de cliente %d",i);exit(0);}
+        if(playersFifos[i] < 0) {
+        	printf("<sendInitPack> erro a abrir pipe de cliente %d",i);
+        	exit(0);
+    	}
         int nbytes = write(playersFifos[i],&toSend, sizeof(toSend));
         if(nbytes==0) return 0;
         printf("<sendInitPack> fim de iteracao %d\n",i);
@@ -302,10 +311,67 @@ void sigint_handler(int signum) {
     
     int random = (rand() % 8) ;
     printf("\n%s: %d\n", killMessages[random], signum);
+    //Terminar jogoui
 
     //close(lockFile);
     unlink(LOCK_FILENAME);
     exit(0);
+}
+
+int RUNNING = 1;
+
+void termina(int sig) {
+	RUNNING = 0;
+}
+
+void initBot(int interval, int duration) {
+	char intervalBuffer[3];
+	sprintf(intervalBuffer, "%d", interval);
+	char durationBuffer[3];
+	sprintf(durationBuffer, "%d", duration);
+	signal(SIGINT, termina);
+    char frase[20];
+    int pipe_fd[2];
+    if(pipe(pipe_fd) == -1){
+    	return 1;
+    }
+    pid_t pid2 = fork();
+    int child = pid2 == 0;
+    if(child) {
+    	close(pipe_fd[0]);
+        dup2(pipe_fd[1], STDOUT_FILENO);
+        close(pipe_fd[1]);
+        execlp("./bot", "./bot", intervalBuffer, durationBuffer, NULL);
+
+        // If execl fails
+        perror("execl");
+        exit(EXIT_FAILURE);
+
+    } else {
+    	close(pipe_fd[1]); // Close write end of the pipe
+
+        char buffer[256];
+        ssize_t bytesRead;
+
+        while (RUNNING) {
+            bytesRead = read(pipe_fd[0], buffer, sizeof(buffer) - 1);
+
+            if (bytesRead > 0) {
+                buffer[bytesRead] = '\0'; // Null-terminate the string
+                printf("Received: %s", buffer); // Store it in your variable or process as needed
+                fflush(stdout);
+            }
+
+            //sleep(1);
+        }
+
+        close(pipe_fd[0]); // Close read end of the pipe
+
+        // Wait for the child process to complete
+        waitpid(pid2, NULL, 0);
+        printf("A sair\n");
+        fflush(stdout);
+    }
 }
 
 

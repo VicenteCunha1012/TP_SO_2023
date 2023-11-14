@@ -4,7 +4,9 @@
 #include "estruturas.h"
 
 int sendInitPack(Avatar users[],int* playersFifos[], int userCount, InitPayload toSend);
-
+int validateJogoUICommand(char* args, Avatar users[], Avatar myAvatar, int playerCount);
+int cleanInput(char* args, int size);
+int validateMotorCommand(char* args);
 int checkRunningInstance(char* filename);
 
 int handleXAndY(char escolha);

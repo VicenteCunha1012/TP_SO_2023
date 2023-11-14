@@ -14,7 +14,7 @@ const char* killMessages[] = {
     "Mataram-me :(",
 };
 
-int \s(int* inscricao, int* minPlayers, int* duracao, int* decremento) {
+int getEnvs(int* inscricao, int* minPlayers, int* duracao, int* decremento) {
     if(getenv("INSCRICAO")==NULL || getenv("NPLAYERS")==NULL || getenv("DURACAO")==NULL || getenv("DECREMENTO")==NULL) {
         return 0;
     }
@@ -193,33 +193,117 @@ Command commands[] = {
 //     }
 // }
 
-int validateCommand(char* args) {
-    char firstToken[20], secondToLast[100];
+int validateJogoUICommand(char* args, Avatar users[], Avatar myAvatar, int playerCount) {
+    char firstToken[20], secondToLast[100]="";
     sscanf(args,"%s %[^\n]",firstToken,secondToLast);
     if(!strcmp(firstToken,"players")) {
         //UNICO exemplo *players
+        if(!strcmp(secondToLast,"")) {
+            return JOGOUI_PLAYERS_SUCCESS;
+        } 
+        return JOGOUI_WRONG_ARGS;
         
     }else if(!strcmp(firstToken,"msg")) {
         //exemplo *msg joao ola joao
-        char nome[USER_NAME_SIZE];
-        char thirdToLast[]
-        sscanf(secondToLast,"%s %[")
+        char nome[USER_NAME_SIZE], thirdToLast[100]="";
+        sscanf(secondToLast,"%s %[^\n]",nome,thirdToLast);
+        int nameFound=0;
+        if(!strcmp(myAvatar.nome,nome)) {
+            return JOGOUI_SELF_NAME;
+        }
+        for(int i=0;i<playerCount;i++) {
+            if(!strcmp(users[i].nome, nome && strcmp(thirdToLast,""))) { // se o jogador existir, nao for o proprio, e a mensagem nao for ""
+                return JOGOUI_MSG_SUCCESS;
+            }
+        }
     }else if(!strcmp(firstToken,"exit")) {
         //UNICO exemplo *exit
         if(!strcmp(secondToLast,"")) {
-            return 1;
+            return JOGOUI_EXIT_SUCCESS;
         }
-        return 0;
+        return JOGOUI_WRONG_ARGS;
+    } else {
+        return JOGOUI_COMMAND_NOT_FOUND;
+    }
+}
+
+int cleanInput(char* args, int size) {
+    if (args == NULL || size <= 0) {
+        // Invalid arguments
+        return -1;
+    }
+
+    int i, j;
+    bool spaceDetected = false;
+    int changesMade = 0;
+
+    // Traverse the string from the end to remove trailing spaces
+    for (i = size - 1; i >= 0; i--) {
+        if (args[i] == ' ' || args[i] == '\t' || args[i] == '\n' || args[i] == '\r') {
+            args[i] = '\0'; // Replace trailing space with null terminator
+            changesMade++;
+        } else {
+            break; // Stop when a non-space character is encountered
+        }
+    }
+
+    // Traverse the string to eliminate double spaces
+    for (i = 0, j = 0; i < size; i++) {
+        if (args[i] == ' ' || args[i] == '\t' || args[i] == '\n' || args[i] == '\r') {
+            if (!spaceDetected) {
+                args[j++] = args[i]; // Copy the first space
+                spaceDetected = true;
+            } else {
+                changesMade++;
+            }
+        } else {
+            args[j++] = args[i]; // Copy non-space character
+            spaceDetected = false;
+        }
+    }
+
+    // Null-terminate the cleaned string
+    args[j] = '\0';
+
+    return changesMade;
+}
+
+int validateMotorCommand(char* args) {
+    char command[20], secondToLast[100];
+    sscanf(args, "%s %[^\n]",command, secondToLast);
+    if(!strcmp(command,"kick")) {
+
+    }else if(!strcmp(command,"users")) {
+        if(!strcmp(secondToLast,"")) {
+            return MOTOR_USERS_SUCCESS;
+        } return MOTOR_WRONG_ARGS;
+    }else if(!strcmp(command,"bots")) {
+
+    }else if(!strcmp(command,"bmov")) {
+
+    }else if(!strcmp(command,"rbm")) {
+
+    }else if(!strcmp(command,"begin")) {
+        if(!strcmp(secondToLast,"")) {
+            return MOTOR_BEGIN_SUCCESS;
+        } return MOTOR_WRONG_ARGS;
+    }else if(!strcmp(command,"end")) { 
+        if(!strcmp(secondToLast,"")) {
+            return MOTOR_END_SUCCESS;
+        } return MOTOR_WRONG_ARGS;
+    }else if(!strcmp(command,"test_bot")){
+    
+    }else {
+       return MOTOR_COMMAND_NOT_FOUND;
     }
 }
 
 
-
-Command jogoUICommands[] = {
-    {"players",validatePlayers},
-    {"msg"    ,validateMsg},
-    {"exit"   ,validateExit}
-};
+// Command jogoUICommands[] = {
+//     {"players",validatePlayers},
+//     {"msg"    ,validateMsg},
+//     {"exit"   ,validateExit}
+//  };
 
 //*ISTO SAO COMANDOS DO JOGOUI
 //ISTO SAO COMANDOS DO VROOM

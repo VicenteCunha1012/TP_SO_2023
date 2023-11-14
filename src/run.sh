@@ -17,14 +17,14 @@ make
 cd src
 
 
-gnome-terminal -- bash -c "./motor; exit"
-sleep 1
-gnome-terminal -- bash -c "./jogoUI nome1; exec bash"
-sleep 0.3
-gnome-terminal -- bash -c "./jogoUI nome2; exit"
-sleep 0.3
-gnome-terminal -- bash -c "./jogoUI nome3; exit"
-sleep 0.3
-gnome-terminal -- bash -c "./jogoUI nome4; exit"
-sleep 0.3
-gnome-terminal -- bash -c "./jogoUI nome5; exit"
+gnome-terminal --full-screen -- bash -c "./motor; exit"
+sleep 0.5
+gnome-terminal  --full-screen -- bash -c "./jogoUI nome1; exec bash"
+sleep 0.1
+gnome-terminal --full-screen -- bash -c "./jogoUI nome2; exit"
+sleep 0.1
+gnome-terminal --full-screen -- bash -c "./jogoUI nome3; exit"
+sleep 0.1
+gnome-terminal  --full-screen -- bash -c "./jogoUI nome4; exit"
+sleep 0.1
+gnome-terminal --full-screen -- bash -c "./jogoUI nome5; exit"

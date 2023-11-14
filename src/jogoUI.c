@@ -80,9 +80,8 @@ int main(int argc, char** argv) {
     for(int i=0;i<MAP_ROWS;i++) {
         for(int j=0;j<MAP_COLUMNS;j++) {
             if(payload.mapa[i][j]!='\n') {
-                printf("\nA tenta r escrever na topWindow em %d:%d",i+1,j+1);
-                printf("->%c",payload.mapa[i][j]);
-                mvprintw(topWindow, i+1, j+1, "%c",payload.mapa[i][j]);
+                //mvprintw(topWindow, i+1, j+1, "%c",payload.mapa[i][j]);
+                mvwaddch(topWindow, i+1, j+1, payload.mapa[i][j]);
                 
             }
         }

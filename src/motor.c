@@ -17,13 +17,13 @@ int main(int argc, char **argv) {
         printf("Ja existe uma instancia deste programa a correr nesta maquina.\n");
         exit(0);
     }
+    
     signal(SIGINT,sigint_handler);
 #if 1
     int inscricao, minPlayers, duracao, decremento; //vars do ambiente
     char mapBuffer[MAP_ROWS][MAP_COLUMNS];
     Avatar users[MAX_USERS];
     int currentPlayers = 0;
-
     
     
     if(!getEnvs(&inscricao,&minPlayers,&duracao,&decremento)) {

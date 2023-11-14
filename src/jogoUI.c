@@ -26,6 +26,7 @@ int main(int argc, char** argv) {
 	int sendAvatarFd = open(FIFO_SERVIDOR, O_WRONLY);
     if(sendAvatarFd==-1) {
         printf("Ocorreu um erro aler o sendAvatarfd\n");
+        getchar();
         exit(0);
     }
 	if(write(sendAvatarFd, &myAvatar, sizeof(myAvatar)) == -1) {

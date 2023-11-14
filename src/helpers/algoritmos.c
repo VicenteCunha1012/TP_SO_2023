@@ -15,14 +15,17 @@ const char* killMessages[] = {
 };
 
 int getEnvs(int* inscricao, int* minPlayers, int* duracao, int* decremento) {
-    
+    if(getenv("$INSCRICAO")==NULL) {
+        return 0;
+    }
     *inscricao = atoi(getenv("INSCRICAO"));
+    printf("saquei um ");fflush(stdout);
     *minPlayers = atoi(getenv("NPLAYERS"));
     *duracao = atoi(getenv("DURACAO"));
     *decremento = atoi(getenv("DECREMENTO"));
     
     if(*inscricao < 0 || *minPlayers > 5 || *minPlayers < 0 || *duracao < 0 || *decremento < 0) {
-        return 0;
+        return 2;
     }
     return 1;
 }

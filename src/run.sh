@@ -1,9 +1,9 @@
 folder="/home/vicente/Desktop/TP_SO_2023/TP_SO_2023/src"
 
-#INSCRICAO=300
-#NPLAYERS=2
-#DURACAO=300
-#DECREMENTO=10
+export INSCRICAO=300
+export NPLAYERS=2
+export DURACAO=300
+export DECREMENTO=10
 
 
 
@@ -19,6 +19,8 @@ fi
 
 cd ..
  
+ make
+
 cd src
 
 gnome-terminal --full-screen -- bash -c "./motor; exit"

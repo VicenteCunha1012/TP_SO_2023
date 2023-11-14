@@ -14,8 +14,8 @@ const char* killMessages[] = {
     "Mataram-me :(",
 };
 
-int getEnvs(int* inscricao, int* minPlayers, int* duracao, int* decremento) {
-    if(getenv("$INSCRICAO")==NULL) {
+int \s(int* inscricao, int* minPlayers, int* duracao, int* decremento) {
+    if(getenv("INSCRICAO")==NULL || getenv("NPLAYERS")==NULL || getenv("DURACAO")==NULL || getenv("DECREMENTO")==NULL) {
         return 0;
     }
     *inscricao = atoi(getenv("INSCRICAO"));
@@ -25,7 +25,7 @@ int getEnvs(int* inscricao, int* minPlayers, int* duracao, int* decremento) {
     *decremento = atoi(getenv("DECREMENTO"));
     
     if(*inscricao < 0 || *minPlayers > 5 || *minPlayers < 0 || *duracao < 0 || *decremento < 0) {
-        return 2;
+        return 0;
     }
     return 1;
 }
@@ -174,28 +174,48 @@ Command commands[] = {
 
 //ISTO SAO COMANDOS DO JOGOUI
 
-int validatePlayers(char* args){
-    if(!strcmp(args,"")) {
-        return 1; //executa
-    } else {
-        return 0;
-    }
-}
-int validateMsg(char* args){
-    //msg joao ola joao tudo bem
-    //joao ola joao tudo bem
-    char arg1[20], arg2[20];
-    sscanf(args,"%s %[^\n]",arg1,arg2);
+// int validatePlayers(char* args){
+//     if(!strcmp(args,"")) {
+//         return 1; //executa
+//     } else {
+//         return 0;
+//     }
+// }
+// int validateMsg(char* args){
+//     //msg joao ola joao tudo bem
+//     //joao ola joao tudo bem
+//     char arg1[20], arg2[20];
+//     sscanf(args,"%s %[^\n]",arg1,arg2);
     
-    if(!strcmp(arg1,"") || !strcmp(arg2,"")) {
-        return 0; 
-    }
-    return 1; //executa
-}
-int validateExit(char* args) {
-    if(!strcmp(args,"")) {
-        return 1; //executa
-    } else {
+//     if(!strcmp(arg1,"") || !strcmp(arg2,"")) {
+//         return 0; 
+//     }
+//     return 1; //executa
+// }
+// int validateExit(char* args) {
+//     if(!strcmp(args,"")) {
+//         return 1; //executa
+//     } else {
+//         return 0;
+//     }
+// }
+
+int validateCommand(char* args) {
+    char firstToken[20], secondToLast[100];
+    sscanf(args,"%s %[^\n]",firstToken,secondToLast);
+    if(!strcmp(firstToken,"players")) {
+        //UNICO exemplo *players
+        
+    }else if(!strcmp(firstToken,"msg")) {
+        //exemplo *msg joao ola joao
+        char nome[USER_NAME_SIZE];
+        char thirdToLast[]
+        sscanf(secondToLast,"%s %[")
+    }else if(!strcmp(firstToken,"exit")) {
+        //UNICO exemplo *exit
+        if(!strcmp(secondToLast,"")) {
+            return 1;
+        }
         return 0;
     }
 }
@@ -310,8 +330,12 @@ void sigint_handler(int signum) {
     srand(time(NULL));
     
     int random = (rand() % 8) ;
+<<<<<<< HEAD
     printf("\n%s: %d\n", killMessages[random], signum);
     //Terminar jogoui
+=======
+    printf("\n%s\n", killMessages[random]);
+>>>>>>> bfefc1ba09676f625b3e1ea920a595d37eb13215
 
     //close(lockFile);
     unlink(LOCK_FILENAME);

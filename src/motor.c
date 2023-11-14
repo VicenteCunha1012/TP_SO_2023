@@ -40,7 +40,6 @@ int main(int argc, char **argv) {
     if((pid = fork()) == 0) {   	
         while(currentPlayers < MAX_USERS) {	
         	getPlayers(users, &currentPlayers, receiveFd);
-            printf("%d\n",users[currentPlayers].pid);
         }
 
         InitPayload toSend;

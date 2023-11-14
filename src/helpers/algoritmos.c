@@ -15,7 +15,7 @@ const char* killMessages[] = {
 };
 
 int getEnvs(int* inscricao, int* minPlayers, int* duracao, int* decremento) {
-    if(getenv("$INSCRICAO")==NULL) {
+    if(getenv("INSCRICAO")==NULL || getenv("NPLAYERS")==NULL || getenv("DURACAO")==NULL || getenv("DECREMENTO")==NULL) {
         return 0;
     }
     *inscricao = atoi(getenv("INSCRICAO"));
@@ -25,7 +25,7 @@ int getEnvs(int* inscricao, int* minPlayers, int* duracao, int* decremento) {
     *decremento = atoi(getenv("DECREMENTO"));
     
     if(*inscricao < 0 || *minPlayers > 5 || *minPlayers < 0 || *duracao < 0 || *decremento < 0) {
-        return 2;
+        return 0;
     }
     return 1;
 }
@@ -301,7 +301,7 @@ void sigint_handler(int signum) {
     srand(time(NULL));
     
     int random = (rand() % 8) ;
-    printf("\n%s: %d\n", killMessages[random], signum);
+    printf("\n%s\n", killMessages[random]);
 
     //close(lockFile);
     unlink(LOCK_FILENAME);

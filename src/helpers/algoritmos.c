@@ -88,6 +88,7 @@ void initAvatar(Avatar *myAvatar, char *name) {
     myAvatar->state = ' ';
     myAvatar->cor = ' ';
 	myAvatar->pid = getpid();
+    myAvatar->isVerified = 0;
 }
 
 
@@ -502,6 +503,7 @@ void initBot(int interval, int duration) {
         fflush(stdout);
     }
 }
+
 
 void makeOpenEnginePipe(int *receiveFd) {
 	mkfifo(FIFO_SERVIDOR, 0777);

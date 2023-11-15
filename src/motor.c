@@ -5,7 +5,7 @@ int main(int argc, char **argv) {
         fprintf(stderr, "Ja existe uma instancia deste programa a correr nesta maquina.\n");
         exit(0);
     }
-    
+    //coco
     int inscricao, minPlayers, duracao, decremento; 		// Variáveis de Ambiente
     char mapBuffer[MAP_ROWS][MAP_COLUMNS], levelName[7];	// Buffer para o mapa de cada nível
     Avatar users[MAX_USERS];								// Array de utilizadores ("clientes")

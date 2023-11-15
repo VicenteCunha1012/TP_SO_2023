@@ -31,7 +31,7 @@ typedef struct {
 } Command;
 
 typedef struct {
-    char header[3];
+    char header[4]; //mudei de 3 para 4 por causa do alinhamento
     union message_t {
         int x;
         char comando [COMMAND_PACKET_SIZE];

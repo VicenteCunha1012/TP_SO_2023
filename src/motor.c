@@ -28,18 +28,21 @@ int main(int argc, char **argv) {
     if(!(pid = fork())) {
         while(currentPlayers < MAX_USERS) {	
         	getPlayers(users, &currentPlayers, receiveFd);
-        }
+        } //Recebe as informações dos jogadores através do pipe FIFO_SERVIDOR
 
 		sprintf(levelName, "level%d.txt", currentLevel);
-    	createMap(levelName, mapBuffer);  
+    	createMap(levelName, mapBuffer);  //Lê o ficheiro com nome levelName e importa o mapa lá escrito
     	
         InitPayload toSend;
-        initPayload(&toSend, users, mapBuffer);
+        initPayload(&toSend, users, mapBuffer); //Prepara o pacote primario que envia uma vez a todos os clientes
+                                                //com informacoes do mapa e de todos os users
 
 		if(!sendInitPack(users, playerFifos, MAX_USERS, toSend)) {
 			printf("Ocorreu um erro a enviar informacao aos clientes\n");
 			exit(0);
-		}
+		} //envia o pacote
+
+        
 		
         close(receiveFd);
         unlink(receiveFd);

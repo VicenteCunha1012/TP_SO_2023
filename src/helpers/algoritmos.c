@@ -265,6 +265,25 @@ int cleanInput(char* args, int size) {
     return changesMade;
 }
 
+int 
+
+void initPlayersPos(Avatar* users[], int playerCount,char mapa[][]) {
+    for(int i=0;i<playerCount;i++) {
+        if(users[i]->isPlaying) {
+            int isInAvoydable = 0;
+            do {
+            users[i]->x = handleXAndY('x');
+            users[i]->y = handleXAndY('y');
+                for(int i=0;i<AVOYDABLES_SIZE;i++) {
+                    if(mapa[users[i]->x][users[i]->y*2]==avoydables[i]) {
+                        isInAvoydable = 1;
+                    }
+                }
+            } while(!isInAvoydable); 
+        }
+    }
+}
+
 int validateMotorCommand(char* args) {
     char command[20], secondToLast[100];
     sscanf(args, "%s %[^\n]",command, secondToLast);
